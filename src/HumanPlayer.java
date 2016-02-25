@@ -4,13 +4,14 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
+    private Scanner reader;
+
     public HumanPlayer(int numPawns, Boolean isBlack) {
         super(numPawns, isBlack);
+        reader = new Scanner(System.in);
     }
     
-    public BoardState runTurn(BoardState currentState){
-        Scanner reader = new Scanner(System.in);
-        
+    public BoardState runTurn(BoardState currentState){ 
         Collection<Integer> pawnOptions = currentState.renderPawnOptions(this);
         System.out.println("Which pawn do you want to move?: ");
         int pawnIdx = reader.nextInt();
