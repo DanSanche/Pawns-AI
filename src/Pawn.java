@@ -23,5 +23,9 @@ public class Pawn {
     public Boolean isBlackTeam(){
         return this.owner.isBlackTeam();
     }
+    
+    public Boolean isOnTeam(Pawn other){
+        return owner.isEqual(other.owner);
+    }
 
 }

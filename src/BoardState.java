@@ -117,25 +117,24 @@ public class BoardState {
             forwardValue = pawnPos + this.boardSize;
         }
         //test if it's off the board, or if there's another pawn in the space
-        if(forwardValue >= 0 && forwardValue < this.boardSize*this.boardSize &&
-           !this.pawnPositions.containsKey(new Integer(forwardValue))){
+        if(forwardValue >= 0 && forwardValue < this.boardSize*this.boardSize && !this.pawnPositions.containsKey(new Integer(forwardValue))){
             validOptions.add(new Integer(forwardValue));
         }
            
         //test attacking to the left (relative to observer)
         int leftAttackValue = forwardValue -1;
         //test if the attack is on the right edge, or if there is no pawn to attack
-        if(this.pawnPositions.containsKey(new Integer(leftAttackValue)) &&
+        Pawn target = this.pawnPositions.get(new Integer(leftAttackValue));
+        if(target != null && !target.isOnTeam(selectedPawn) &&
         leftAttackValue % (this.boardSize) != (this.boardSize-1)){
-            //find the pawn that inhabits left space
             validOptions.add(new Integer(leftAttackValue));
         }
         
         //test attacking to the right
        int rightAttackValue = forwardValue +1;
      //test if the attack is on the left edge, or if there is no pawn to attack
-       if(this.pawnPositions.containsKey(new Integer(rightAttackValue)) &&
-       rightAttackValue % (this.boardSize) != (0)){
+       target = this.pawnPositions.get(new Integer(rightAttackValue));
+       if(target != null && !target.isOnTeam(selectedPawn) && rightAttackValue % (this.boardSize) != (0)){
            validOptions.add(new Integer(rightAttackValue));    
        }
        
