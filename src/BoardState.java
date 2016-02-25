@@ -95,7 +95,7 @@ public class BoardState {
         //test if it's off the board, or if there's another pawn in the space
         if(forwardValue >= 0 && 
            forwardValue < this.boardSize*this.boardSize &&
-           !this.pawnPositions.containsKey(new Integer(forwardValue))){
+           !this.pawnPositions.contains(new Integer(forwardValue))){
             validOptions.add(new Integer(forwardValue));
         }
            
