@@ -56,7 +56,7 @@ public class Main {
         //print out winner information
         System.out.println("\n\n\n----------------");
         currentState.renderState();
-        System.out.println("\n Game Complete");
+        System.out.println("\nPwned!!");
         Player winner = currentState.findWinner(blackPlayer, whitePlayer);
         if(winner == null){
             System.out.println("Tie Game");
