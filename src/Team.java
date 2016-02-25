@@ -3,11 +3,9 @@ import java.util.List;
 
 public class Team {
 
-    private String name;
     private List<Pawn> pawnList;
     
-    public Team(int numPawns, String name) {
-       this.setName(name);
+    public Team(int numPawns) {
        pawnList = new LinkedList<Pawn>();
        for (int i=0; i< numPawns; i++){
            Pawn thisPawn = new Pawn();
@@ -15,12 +13,6 @@ public class Team {
        }
     }
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
 }
