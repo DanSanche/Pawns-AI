@@ -19,5 +19,9 @@ public class Pawn {
     public Boolean isOwnedBy(Player other){
         return (owner.isEqual(other));
     }
+    
+    public Boolean isBlackTeam(){
+        return this.owner.isBlackTeam();
+    }
 
 }

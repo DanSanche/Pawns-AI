@@ -74,4 +74,28 @@ public class BoardState {
         return validOptions;
     }  
     
+    public Collection<Integer> nextOptionsForPawn(Pawn selectedPawn){
+        int pos = this.pawnPositions.get(selectedPawn).intValue();
+        Collection<Integer> validOptions = new LinkedList<Integer>();
+        
+        //test one space in front
+        int forwardValue;
+        if(selectedPawn.isBlackTeam()){
+            forwardValue = pos - this.boardSize;
+        } else {
+            forwardValue = pos + this.boardSize;
+        }
+        //test if it's off the board, or if there's another pawn in the space
+        if(forwardValue >= 0 && 
+           forwardValue < this.boardSize*this.boardSize &&
+           !this.pawnPositions.containsKey(new Integer(forwardValue))){
+            validOptions.add(new Integer(forwardValue));
+        }
+           
+        //test attacking to the left
+        
+        //test attacking to the right
+        
+        return validOptions;
+    }
 }
