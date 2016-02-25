@@ -259,13 +259,13 @@ public class BoardState {
         }
     }
     
-    public List<Integer> pawnPositionsForPlayer(Player selected){
+    public List<Integer> pawnPositionsForPlayer(Boolean playerIsBlack){
         List<Integer> resultsList = new LinkedList<Integer>();
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         while(it.hasNext()){
             Integer pos = it.next();
             Pawn thisPawn = this.pawnPositions.get(pos);
-            if(thisPawn.isOwnedBy(selected)){
+            if(thisPawn.isBlackTeam() == playerIsBlack){
                 resultsList.add(pos);
             }
         }
@@ -277,17 +277,17 @@ public class BoardState {
     }
     
     //returns how far up a pawn has gotten
-    public int evaluateValueForPlayer(Player selected){
+    public int evaluateValueForPlayer(Boolean isBlack){
         int maxLevel = 0;
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         while(it.hasNext()){
             Integer pos = it.next();
             Pawn nextPawn = this.pawnPositions.get(pos);
-            if(nextPawn.isOwnedBy(selected)){
+            if(nextPawn.isBlackTeam() == isBlack){
                 int thisLevel = pos / this.boardSize;
                 //black pawns start at bottom and move to top. Invert this level
                 if(nextPawn.isBlackTeam()){
-                    thisLevel = Math.abs(this.boardSize - thisLevel);
+                    thisLevel = Math.abs(this.boardSize - (thisLevel+1));
                 }
                 if(thisLevel > maxLevel){
                     maxLevel = thisLevel;
