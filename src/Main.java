@@ -22,9 +22,15 @@ public class Main {
             }
             gameComplete = !(whiteCanMove || blackCanMove);
         }
-        System.out.println("\n\n\n");
+        System.out.println("\n\n\n----------------");
         currentState.renderState();
-        System.out.println("Game Complete");
+        System.out.println("\n Game Complete");
+        Player winner = currentState.findWinner(blackPlayer, whitePlayer);
+        if(winner == null){
+            System.out.println("Tie Game");
+        } else {
+            System.out.println(winner.toString() + " Wins!");
+        }
     }
 
 }

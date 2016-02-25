@@ -31,4 +31,12 @@ public class Player {
     public Boolean isBlackTeam(){
         return this.isBlackTeam;
     }
+    
+    public String toString(){
+        if(this.isBlackTeam){
+            return "Black Team";
+        } else {
+            return "White Team";
+        }
+    }
 }

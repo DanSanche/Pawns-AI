@@ -226,4 +226,36 @@ public class BoardState {
         }
         return hasMovesLeft;
     }
+    
+    public Player findWinner(Player black, Player white){
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        
+        int blackCount = 0;
+        int whiteCount = 0;
+               
+        while(it.hasNext()){
+            Integer pos = it.next();
+            Pawn thisPawn = this.pawnPositions.get(pos);
+            //increment number of living pawns for right team
+            if(thisPawn.isOwnedBy(black)){
+               blackCount++;
+            } else if (thisPawn.isOwnedBy(white)){
+                whiteCount++;
+            }
+            if(thisPawn.isBlackTeam() && pos.intValue() < this.boardSize){
+                //black has reached the end. Black won
+                return black;
+            } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (this.boardSize*(this.boardSize-1))){
+                //white has reached the end. White won
+                return white;
+            }
+        }
+        if(blackCount > whiteCount){
+            return black;
+        } else if(whiteCount > blackCount){
+            return white;
+        } else {
+            return null;
+        }
+    }
 }
