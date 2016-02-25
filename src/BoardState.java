@@ -1,8 +1,11 @@
 import java.util.List;
 import java.util.Set;
+import java.util.AbstractSet;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class BoardState {
     
@@ -31,8 +34,9 @@ public class BoardState {
         }
     }
     
-    public void renderPawnOptions(Player selectedPlayer){
+    public Collection<Integer> renderPawnOptions(Player selectedPlayer){
         String boardString = "";
+        Collection<Integer> validOptions = new LinkedList<Integer>();
         
         ArrayList<String> tileStrings = new ArrayList<String>(this.boardSize * this.boardSize);
         for(int i=0; i<this.boardSize*this.boardSize; i++){
@@ -45,6 +49,7 @@ public class BoardState {
             Integer pawnPos = this.pawnPositions.get(thisPawn);
             if(pawnPos != null){
                 tileStrings.set(pawnPos, Integer.toString(i+1));
+                validOptions.add(new Integer(i));
             }
         }
         
@@ -66,6 +71,7 @@ public class BoardState {
             boardString = boardString + " " + tileValue + " ";
         }
         System.out.println(boardString);
+        return validOptions;
     }  
     
 }
