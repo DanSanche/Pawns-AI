@@ -15,20 +15,19 @@ public class RobotPlayer extends Player {
 
     private List<BoardState> findAllValidMoves(BoardState currentState){
         List<BoardState> resultsList = new LinkedList<BoardState>();
-        Iterator<Pawn> it = this.getPawnList().iterator();
+        
+        List<Integer> positionList = currentState.pawnPositionsForPlayer(this);
+        Iterator<Integer> it = positionList.iterator();
         while(it.hasNext()){
-            Pawn nextPawn = it.next();
-            //TODO: possible speed up? It loops through pawn list every time this is called
-            try{
-                List<Integer> optionsList = currentState.nextOptionsForPawn(nextPawn);
-                Iterator<Integer> optionsIt = optionsList.iterator();
-                while(optionsIt.hasNext()){
-                    Integer thisOption = optionsIt.next();
-                    BoardState newState = new BoardState(currentState, nextPawn, thisOption);
-                    resultsList.add(newState);
-                }
-            } catch(RuntimeException e){
-                //this pawn is dead
+            Integer position = it.next();
+            Pawn nextPawn = currentState.pawnAtPosition(position);
+
+            List<Integer> optionsList = currentState.nextOptionsForPawn(nextPawn, position.intValue());
+            Iterator<Integer> optionsIt = optionsList.iterator();
+            while(optionsIt.hasNext()){
+                Integer thisOption = optionsIt.next();
+                BoardState newState = new BoardState(currentState, nextPawn, thisOption);
+                resultsList.add(newState);
             }
         }
         return resultsList;

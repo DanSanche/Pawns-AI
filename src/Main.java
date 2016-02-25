@@ -2,9 +2,11 @@ import java.util.Scanner;
 
 public class Main {
 
+    private static Scanner reader;
+
     public static void main(String [] args){
         int boardSize = 5;
-        Scanner reader = new Scanner(System.in);
+        reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;
         String inputString;

@@ -258,4 +258,21 @@ public class BoardState {
             return null;
         }
     }
+    
+    public List<Integer> pawnPositionsForPlayer(Player selected){
+        List<Integer> resultsList = new LinkedList<Integer>();
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        while(it.hasNext()){
+            Integer pos = it.next();
+            Pawn thisPawn = this.pawnPositions.get(pos);
+            if(thisPawn.isOwnedBy(selected)){
+                resultsList.add(pos);
+            }
+        }
+        return resultsList;
+    }
+    
+    public Pawn pawnAtPosition(Integer pos){
+        return this.pawnPositions.get(pos);
+    }
 }
