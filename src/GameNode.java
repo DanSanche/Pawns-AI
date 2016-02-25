@@ -24,7 +24,7 @@ public class GameNode {
         Iterator<Integer> it = positionList.iterator();
         while(it.hasNext()){
             Integer position = it.next();
-            Pawn nextPawn = this.rootState.pawnAtPosition(position);
+            Pawn nextPawn = this.rootState.pawnPositions.get(position);
 
             List<Integer> optionsList = this.rootState.nextOptionsForPawn(nextPawn, position.intValue());
             Iterator<Integer> optionsIt = optionsList.iterator();

@@ -7,9 +7,9 @@ import java.util.LinkedList;
 
 public class BoardState {
     
-    private Hashtable<Integer, Pawn> pawnPositions;
+    Hashtable<Integer, Pawn> pawnPositions;
     
-    private int boardSize;
+    int boardSize;
 
     public BoardState(int boardSize, Player firstTeam, Player secondTeam) {
         //create board spaces
@@ -272,29 +272,4 @@ public class BoardState {
         return resultsList;
     }
     
-    public Pawn pawnAtPosition(Integer pos){
-        return this.pawnPositions.get(pos);
-    }
-    
-    //returns how far up a pawn has gotten
-    public int evaluateValueForPlayer(Boolean isBlack){
-        int maxLevel = 0;
-        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
-        while(it.hasNext()){
-            Integer pos = it.next();
-            Pawn nextPawn = this.pawnPositions.get(pos);
-            if(nextPawn.isBlackTeam() == isBlack){
-                int thisLevel = pos / this.boardSize;
-                //black pawns start at bottom and move to top. Invert this level
-                if(nextPawn.isBlackTeam()){
-                    thisLevel = Math.abs(this.boardSize - (thisLevel+1));
-                }
-                if(thisLevel > maxLevel){
-                    maxLevel = thisLevel;
-                }
-            }
-        }
-        System.out.println(maxLevel);
-        return maxLevel;
-    }
 }

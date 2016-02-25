@@ -14,14 +14,15 @@ public class MinNode extends GameNode {
         while(it.hasNext()){
             int nextCost;
             BoardState nextState = it.next();
-            //terminal node. use base cost
+            GameNode nextNode;
             if(depth == 0){
-                nextCost = nextState.evaluateValueForPlayer(!this.isBlack);
+              //terminal node. use base cost
+                nextNode = new TerminalNode(nextState, !this.isBlack);
             } else {
                 //more levels. Make another max node
-                MaxNode nextNode = new MaxNode(nextState, !this.isBlack);
-                nextCost = nextNode.findBestOption(depth);
+                nextNode = new MaxNode(nextState, !this.isBlack);
             }
+            nextCost = nextNode.findBestOption(depth);
             if(nextCost < minVal){
                 minVal = nextCost;
                 this.bestOption = nextState;
