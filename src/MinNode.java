@@ -32,7 +32,7 @@ public class MinNode extends GameNode {
             return minVal;
         } else {
             //if there are no other options, return the value of this state
-            TerminalNode lastNode = new TerminalNode(this.rootState, this.isBlack);
+            TerminalNode lastNode = new TerminalNode(this.rootState, !this.isBlack);
             return lastNode.findBestOption(depth);
         }
     }

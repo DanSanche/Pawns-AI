@@ -8,6 +8,8 @@ public class TerminalNode extends GameNode {
     }
     
     public int findBestOption(int depth){
+        //TODO: if there are no moves left, count find if this option is a win or loss
+        
         int maxLevel = 0;
         Iterator<Integer> it = this.rootState.pawnPositions.keySet().iterator();
         while(it.hasNext()){
