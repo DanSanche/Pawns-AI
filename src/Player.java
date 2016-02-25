@@ -20,7 +20,7 @@ public class Player {
         return this.pawnList;
     }
 
-    public void runTurn(){
+    public void runTurn(Board gameBoard){
         
     }
 

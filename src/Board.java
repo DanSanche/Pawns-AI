@@ -32,16 +32,21 @@ public class Board {
         }
         
     }
-
-    //returns a string representation of the board
-    public String toString(){
+    
+    public String pawnOptionsString(Player selectedPlayer){
+        int pawnNum = 1;
         String boardString = "";
         for(int i=0; i<spacesArray.size(); i++){
             for(int j=0; j<spacesArray.size(); j++){
                 Pawn thisPawn = peekPawnAtPosition(i, j);
                 String pawnString = ".";
                 if (thisPawn != null){
-                    pawnString = thisPawn.toString();
+                    if(thisPawn.isSameOwner(selectedPlayer)){
+                        pawnString = Integer.toString(pawnNum);
+                        pawnNum ++;
+                    } else {
+                        pawnString = thisPawn.toString();
+                    }
                 }
                 boardString = boardString + pawnString + " ";
             }

@@ -16,16 +16,12 @@ public class GameController {
         this.gameBoard = new Board(boardSize, this.firstPlayer, this.secondPlayer);
     }
     
-    public void render(){
-        System.out.print(this.gameBoard.toString());
-    }
-    
     public void startGame(){
         Boolean gameComplete = false;
         while(!gameComplete){
-            firstPlayer.runTurn();
+            firstPlayer.runTurn(this.gameBoard);
             if(!gameComplete){
-                secondPlayer.runTurn();
+                secondPlayer.runTurn(this.gameBoard);
             }
         }
     }
