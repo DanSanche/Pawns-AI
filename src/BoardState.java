@@ -74,9 +74,9 @@ public class BoardState {
         return validOptions;
     }  
     
-    public Collection<Integer> nextOptionsForPawn(Pawn selectedPawn){
+    public List<Integer> nextOptionsForPawn(Pawn selectedPawn){
         int pos = this.pawnPositions.get(selectedPawn).intValue();
-        Collection<Integer> validOptions = new LinkedList<Integer>();
+        List<Integer> validOptions = new LinkedList<Integer>();
         
         //test one space in front
         int forwardValue;
@@ -96,6 +96,47 @@ public class BoardState {
         
         //test attacking to the right
         
+        return validOptions;
+    }
+    
+    public List<Integer> renderMoveOptions(Player selectedPlayer, Pawn selectedPawn){
+        String boardString = "";
+        List<Integer> validOptions = this.nextOptionsForPawn(selectedPawn);
+        
+        //initialize all spaces to empty
+        ArrayList<String> tileStrings = new ArrayList<String>(this.boardSize * this.boardSize);
+        for(int i=0; i<this.boardSize*this.boardSize; i++){
+            tileStrings.add(i, ".");
+        }
+        
+        //add pawns to empty spaces
+        Set<Pawn> allPawns = this.pawnPositions.keySet();
+        Iterator<Pawn> it = allPawns.iterator();
+        while(it.hasNext()){
+            Pawn thisPawn = it.next();
+            Integer pawnPos = this.pawnPositions.get(thisPawn);
+            String pawnString =  thisPawn.toString();
+            if(thisPawn == selectedPawn){
+                pawnString = "*";   
+            }
+            tileStrings.set(pawnPos, pawnString);   
+        }
+        
+        //add moves to empty spaces
+        for(int i=0; i<validOptions.size(); i++){
+            Integer thisMove = validOptions.get(i);
+            tileStrings.set(thisMove, Integer.toString(i+1));   
+        }
+        
+        //render as string
+        for(int i=0; i<tileStrings.size(); i++){
+            if(i%(this.boardSize) == 0 && i!=0){
+                boardString = boardString + "\n";
+            }
+            String tileValue = tileStrings.get(i);
+            boardString = boardString + " " + tileValue + " ";
+        }
+        System.out.println(boardString);
         return validOptions;
     }
 }

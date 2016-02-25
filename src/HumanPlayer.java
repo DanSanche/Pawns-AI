@@ -1,4 +1,5 @@
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 public class HumanPlayer extends Player {
@@ -10,12 +11,21 @@ public class HumanPlayer extends Player {
     public void runTurn(BoardState currentState){
         Scanner reader = new Scanner(System.in);
         
-        Collection<Integer> validOptions = currentState.renderPawnOptions(this);;
+        Collection<Integer> pawnOptions = currentState.renderPawnOptions(this);
         System.out.println("Which pawn do you want to move?: ");
         int pawnIdx = reader.nextInt();
-        while(!validOptions.contains(new Integer(pawnIdx-1))){
+        while(!pawnOptions.contains(new Integer(pawnIdx-1))){
             System.out.println("Please enter a number representing a pawn on the board:");
             pawnIdx = reader.nextInt();
+        }
+        Pawn selectedPawn = this.getPawnList().get(pawnIdx-1);
+        
+        List<Integer> moveOptions = currentState.renderMoveOptions(this, selectedPawn);
+        System.out.println("Which move do you want to make?:");
+        int moveIdx = reader.nextInt();
+        while(moveIdx < 1 || moveIdx > moveOptions.size()){
+            System.out.println("Please enter a number representing an available move:");
+            moveIdx = reader.nextInt();
         }
     }
 
