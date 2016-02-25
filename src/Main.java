@@ -6,6 +6,7 @@ public class Main {
 
     public static void main(String [] args){
         int boardSize = 5;
+        int depth = 5;
         reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;
@@ -19,7 +20,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             whitePlayer = new HumanPlayer(boardSize, false);
         } else {
-            whitePlayer = new RobotPlayer(boardSize, false, 1);
+            whitePlayer = new RobotPlayer(boardSize, false, depth);
         }
         
         do {
@@ -29,7 +30,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             blackPlayer = new HumanPlayer(boardSize, true);
         } else {
-            blackPlayer = new RobotPlayer(boardSize, true, 1);
+            blackPlayer = new RobotPlayer(boardSize, true, depth);
         }
         
         BoardState currentState = new BoardState(boardSize, whitePlayer, blackPlayer);
