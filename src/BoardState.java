@@ -179,4 +179,25 @@ public class BoardState {
         System.out.println(boardString);
         return validOptions;
     }
+    
+    public Boolean playerCanMove(Player selectedPlayer){
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        Boolean hasMovesLeft = false;
+        
+        while(it.hasNext()){
+            Integer pos = it.next();
+            Pawn thisPawn = this.pawnPositions.get(pos);
+            if(!hasMovesLeft && thisPawn.isOwnedBy(selectedPlayer)){
+                hasMovesLeft = (this.nextOptionsForPawn(thisPawn).size() > 0);
+            }
+            if(thisPawn.isBlackTeam() && pos.intValue() < this.boardSize){
+                //black has reached the end. Game over
+                return false;
+            } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (this.boardSize*(this.boardSize-1))){
+                //white has reached the end. Game over
+                return false;
+            }
+        }
+        return hasMovesLeft;
+    }
 }
