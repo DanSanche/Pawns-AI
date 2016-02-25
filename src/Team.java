@@ -13,6 +13,9 @@ public class Team {
        }
     }
 
+    public List<Pawn> getPawnList(){
+        return this.pawnList;
+    }
 
 
 }
