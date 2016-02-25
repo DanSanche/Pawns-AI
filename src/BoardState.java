@@ -92,16 +92,27 @@ public class BoardState {
             forwardValue = pos + this.boardSize;
         }
         //test if it's off the board, or if there's another pawn in the space
-        if(forwardValue >= 0 && 
-           forwardValue < this.boardSize*this.boardSize &&
+        if(forwardValue >= 0 && forwardValue < this.boardSize*this.boardSize &&
            !this.pawnPositions.contains(new Integer(forwardValue))){
             validOptions.add(new Integer(forwardValue));
         }
            
-        //test attacking to the left
+        //test attacking to the left (relative to observer)
+        int leftAttackValue = forwardValue -1;
+        //test if the attack is on the right edge, or if there is no pawn to attack
+        if(this.pawnPositions.contains(new Integer(leftAttackValue)) &&
+        leftAttackValue % (this.boardSize) != (this.boardSize-1)){
+            validOptions.add(new Integer(leftAttackValue));
+        }
         
         //test attacking to the right
-        
+       int rightAttackValue = forwardValue +1;
+     //test if the attack is on the left edge, or if there is no pawn to attack
+       if(this.pawnPositions.contains(new Integer(rightAttackValue)) &&
+       rightAttackValue % (this.boardSize) != (0)){
+           validOptions.add(new Integer(rightAttackValue));    
+       }
+       
         return validOptions;
     }
     

@@ -33,7 +33,7 @@ public class HumanPlayer extends Player {
             }
         }
         
-        int moveIdx;
+        int moveIdx = -1;
         if(moveOptions.size() == 1){
             moveIdx = 1;
         } else {
