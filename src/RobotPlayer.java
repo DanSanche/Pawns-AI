@@ -4,13 +4,28 @@ import java.util.List;
 
 public class RobotPlayer extends Player {
     
-    public RobotPlayer(int numPawns, Boolean isBlack) {
+    protected int depth;
+    
+    public RobotPlayer(int numPawns, Boolean isBlack, int depth) {
         super(numPawns, isBlack);
+        this.depth = depth;
     }
 
     public BoardState runTurn(BoardState currentState){
         List<BoardState> options = this.findAllValidMoves(currentState);
-        return options.get(0);
+        
+        int highestIdx = 0;
+        int maxScore = -1;
+        for(int i=0; i<options.size(); i++){
+            BoardState thisState = options.get(i);
+            int thisScore = thisState.evaluateValueForPlayer(this);
+            if(thisScore > maxScore){
+                highestIdx = i;
+                maxScore = thisScore;
+            }
+        }
+        System.out.println("highest score: " + maxScore);
+        return options.get(highestIdx);
     }
 
     private List<BoardState> findAllValidMoves(BoardState currentState){

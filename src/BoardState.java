@@ -275,4 +275,26 @@ public class BoardState {
     public Pawn pawnAtPosition(Integer pos){
         return this.pawnPositions.get(pos);
     }
+    
+    //returns how far up a pawn has gotten
+    public int evaluateValueForPlayer(Player selected){
+        int maxLevel = 0;
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        while(it.hasNext()){
+            Integer pos = it.next();
+            Pawn nextPawn = this.pawnPositions.get(pos);
+            if(nextPawn.isOwnedBy(selected)){
+                int thisLevel = pos / this.boardSize;
+                //black pawns start at bottom and move to top. Invert this level
+                if(nextPawn.isBlackTeam()){
+                    thisLevel = Math.abs(this.boardSize - thisLevel);
+                }
+                if(thisLevel > maxLevel){
+                    maxLevel = thisLevel;
+                }
+            }
+        }
+        System.out.println(maxLevel);
+        return maxLevel;
+    }
 }

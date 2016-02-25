@@ -19,7 +19,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             whitePlayer = new HumanPlayer(boardSize, false);
         } else {
-            whitePlayer = new RobotPlayer(boardSize, false);
+            whitePlayer = new RobotPlayer(boardSize, false, 1);
         }
         
         do {
@@ -29,7 +29,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             blackPlayer = new HumanPlayer(boardSize, true);
         } else {
-            blackPlayer = new RobotPlayer(boardSize, true);
+            blackPlayer = new RobotPlayer(boardSize, true, 1);
         }
         
         BoardState currentState = new BoardState(boardSize, whitePlayer, blackPlayer);
