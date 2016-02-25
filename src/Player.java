@@ -1,11 +1,11 @@
 import java.util.LinkedList;
 import java.util.List;
 
-public class Team {
+public class Player {
 
     private List<Pawn> pawnList;
     
-    public Team(int numPawns) {
+    public Player(int numPawns) {
        pawnList = new LinkedList<Pawn>();
        for (int i=0; i< numPawns; i++){
            Pawn thisPawn = new Pawn();
@@ -17,5 +17,8 @@ public class Team {
         return this.pawnList;
     }
 
+    public void runTurn(){
+        
+    }
 
 }

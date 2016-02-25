@@ -1,8 +1,8 @@
 
 public class GameController {
     
-    private Team firstTeam;
-    private Team secondTeam;
+    private Player firstPlayer;
+    private Player secondPlayer;
     private Board gameBoard;
 
     public GameController(int boardSize) {
@@ -11,12 +11,22 @@ public class GameController {
 
     
     public void setupFreshGame(int boardSize){
-        this.firstTeam = new Team(boardSize);
-        this.secondTeam = new Team(boardSize);
-        this.gameBoard = new Board(boardSize, this.firstTeam, this.secondTeam);
+        this.firstPlayer = new HumanPlayer(boardSize);
+        this.secondPlayer = new HumanPlayer(boardSize);
+        this.gameBoard = new Board(boardSize, this.firstPlayer, this.secondPlayer);
     }
     
     public void render(){
         System.out.print(this.gameBoard.toString());
+    }
+    
+    public void startGame(){
+        Boolean gameComplete = false;
+        while(!gameComplete){
+            firstPlayer.runTurn();
+            if(!gameComplete){
+                secondPlayer.runTurn();
+            }
+        }
     }
 }

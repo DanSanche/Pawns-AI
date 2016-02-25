@@ -6,7 +6,7 @@ public class Board {
     
     private ArrayList<ArrayList<Pawn>> spacesArray;
 
-    public Board(int boardSize, Team firstTeam, Team secondTeam) {
+    public Board(int boardSize, Player firstTeam, Player secondTeam) {
         //create board spaces
         this.spacesArray = new ArrayList<ArrayList<Pawn>>(boardSize);
         for(int i=0; i<boardSize; i++){
