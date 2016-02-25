@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.Set;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
@@ -8,13 +7,13 @@ import java.util.LinkedList;
 
 public class BoardState {
     
-    private Hashtable<Pawn, Integer> pawnPositions;
+    private Hashtable<Integer, Pawn> pawnPositions;
     
     private int boardSize;
 
     public BoardState(int boardSize, Player firstTeam, Player secondTeam) {
         //create board spaces
-        this.pawnPositions = new Hashtable<Pawn, Integer>();
+        this.pawnPositions = new Hashtable<Integer, Pawn>();
 
         this.boardSize = boardSize;
         
@@ -22,51 +21,58 @@ public class BoardState {
         List<Pawn> firstList = firstTeam.getPawnList();
         for(int i=0; i<boardSize; i++){
             Pawn thisPawn = firstList.get(i);
-            pawnPositions.put(thisPawn, new Integer(i));
+            pawnPositions.put(new Integer(i), thisPawn);
         }
         
         List<Pawn> secondList = secondTeam.getPawnList();
         for(int i=0; i<boardSize; i++){
             Pawn thisPawn = secondList.get(i);
             int pawnPos = (boardSize * (boardSize-1)) + i;
-            pawnPositions.put(thisPawn, new Integer(pawnPos));
+            pawnPositions.put(new Integer(pawnPos), thisPawn);
         }
     }
     
     public BoardState(BoardState prevState, Pawn movedPawn, Integer newPosition){
-        this.pawnPositions = new Hashtable<Pawn, Integer>(prevState.pawnPositions);
+        this.pawnPositions = new Hashtable<Integer, Pawn>();
         this.boardSize = prevState.boardSize;
         
-        this.pawnPositions.put(movedPawn, newPosition);
+        //add back in other pawns
+        Iterator<Integer> it = prevState.pawnPositions.keySet().iterator();
+        while(it.hasNext()){
+            Integer pos = it.next();
+            Pawn nextPawn = prevState.pawnPositions.get(pos);
+            if(nextPawn != movedPawn){
+                this.pawnPositions.put(pos, nextPawn);
+            }
+        }
+        //add back in moved pawn
+        this.pawnPositions.put(newPosition, movedPawn);
     }
     
     public Collection<Integer> renderPawnOptions(Player selectedPlayer){
         String boardString = "";
         Collection<Integer> validOptions = new LinkedList<Integer>();
         
+        //initialize all spaces to empty
         ArrayList<String> tileStrings = new ArrayList<String>(this.boardSize * this.boardSize);
         for(int i=0; i<this.boardSize*this.boardSize; i++){
             tileStrings.add(i, ".");
         }
         
-        List<Pawn> playerPawns = selectedPlayer.getPawnList();
-        for(int i=0; i<playerPawns.size(); i++){
-            Pawn thisPawn = playerPawns.get(i);
-            Integer pawnPos = this.pawnPositions.get(thisPawn);
-            if(pawnPos != null){
-                tileStrings.set(pawnPos, Integer.toString(i+1));
-                validOptions.add(new Integer(i));
-            }
-        }
-        
-        Set<Pawn> allPawns = this.pawnPositions.keySet();
-        Iterator<Pawn> it = allPawns.iterator();
+        //add pawns to empty spaces
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         while(it.hasNext()){
-            Pawn thisPawn = it.next();
-            if(!thisPawn.isOwnedBy(selectedPlayer)){
-                Integer pawnPos = this.pawnPositions.get(thisPawn);
-                tileStrings.set(pawnPos, thisPawn.toString());   
+            Integer thisPos = it.next();
+            Pawn thisPawn = this.pawnPositions.get(thisPos);
+            String pawnString = thisPawn.toString();
+            
+            //check if the pawn belongs to the selected player
+            int idx = selectedPlayer.getPawnList().indexOf(thisPawn);
+            if(idx > -1 ){
+                pawnString = Integer.toString(idx+1);
+                validOptions.add(new Integer(idx));  
             }
+            tileStrings.set(thisPos, pawnString);
         }
         
         for(int i=0; i<tileStrings.size(); i++){
@@ -80,35 +86,55 @@ public class BoardState {
         return validOptions;
     }  
     
-    public List<Integer> nextOptionsForPawn(Pawn selectedPawn){
-        int pos = this.pawnPositions.get(selectedPawn).intValue();
+    //returns a list of options for moves for the pawn,
+    //or throws an exception if it's not on the board
+    public List<Integer> nextOptionsForPawn(Pawn selectedPawn) throws RuntimeException{
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        int pos = -1;
+        while(pos == -1 && it.hasNext()){
+            Integer thisPos = it.next();
+            Pawn nextPawn = this.pawnPositions.get(thisPos);
+            if(nextPawn == selectedPawn){
+                pos = thisPos.intValue();
+            }
+        }
+        if(pos != -1){
+            return nextOptionsForPawn(selectedPawn, pos);
+        } else {
+            throw new RuntimeException("Pawn not on board");
+        }
+    }
+    
+    //another version of the function if you know the pawns position. More efficient
+    public List<Integer> nextOptionsForPawn(Pawn selectedPawn, int pawnPos){
         List<Integer> validOptions = new LinkedList<Integer>();
         
         //test one space in front
         int forwardValue;
         if(selectedPawn.isBlackTeam()){
-            forwardValue = pos - this.boardSize;
+            forwardValue = pawnPos - this.boardSize;
         } else {
-            forwardValue = pos + this.boardSize;
+            forwardValue = pawnPos + this.boardSize;
         }
         //test if it's off the board, or if there's another pawn in the space
         if(forwardValue >= 0 && forwardValue < this.boardSize*this.boardSize &&
-           !this.pawnPositions.contains(new Integer(forwardValue))){
+           !this.pawnPositions.containsKey(new Integer(forwardValue))){
             validOptions.add(new Integer(forwardValue));
         }
            
         //test attacking to the left (relative to observer)
         int leftAttackValue = forwardValue -1;
         //test if the attack is on the right edge, or if there is no pawn to attack
-        if(this.pawnPositions.contains(new Integer(leftAttackValue)) &&
+        if(this.pawnPositions.containsKey(new Integer(leftAttackValue)) &&
         leftAttackValue % (this.boardSize) != (this.boardSize-1)){
+            //find the pawn that inhabits left space
             validOptions.add(new Integer(leftAttackValue));
         }
         
         //test attacking to the right
        int rightAttackValue = forwardValue +1;
      //test if the attack is on the left edge, or if there is no pawn to attack
-       if(this.pawnPositions.contains(new Integer(rightAttackValue)) &&
+       if(this.pawnPositions.containsKey(new Integer(rightAttackValue)) &&
        rightAttackValue % (this.boardSize) != (0)){
            validOptions.add(new Integer(rightAttackValue));    
        }
@@ -127,18 +153,16 @@ public class BoardState {
         }
         
         //add pawns to empty spaces
-        Set<Pawn> allPawns = this.pawnPositions.keySet();
-        Iterator<Pawn> it = allPawns.iterator();
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         while(it.hasNext()){
-            Pawn thisPawn = it.next();
-            Integer pawnPos = this.pawnPositions.get(thisPawn);
-            String pawnString =  thisPawn.toString();
-            if(thisPawn == selectedPawn){
-                pawnString = "*";   
+            Integer thisPos = it.next();
+            Pawn thisPawn = this.pawnPositions.get(thisPos);
+            String pawnString = thisPawn.toString();
+            if(thisPawn == selectedPawn ){
+                pawnString = "*"; 
             }
-            tileStrings.set(pawnPos, pawnString);   
+            tileStrings.set(thisPos, pawnString);
         }
-        
         //add moves to empty spaces
         for(int i=0; i<validOptions.size(); i++){
             Integer thisMove = validOptions.get(i);
