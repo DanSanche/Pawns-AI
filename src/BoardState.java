@@ -34,6 +34,13 @@ public class BoardState {
         }
     }
     
+    public BoardState(BoardState prevState, Pawn movedPawn, Integer newPosition){
+        this.pawnPositions = new Hashtable<Pawn, Integer>(prevState.pawnPositions);
+        this.boardSize = prevState.boardSize;
+        
+        this.pawnPositions.put(movedPawn, newPosition);
+    }
+    
     public Collection<Integer> renderPawnOptions(Player selectedPlayer){
         String boardString = "";
         Collection<Integer> validOptions = new LinkedList<Integer>();

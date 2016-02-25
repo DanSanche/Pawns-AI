@@ -11,9 +11,9 @@ public class Main {
         //run the game loop
         Boolean gameComplete = false;
         while(!gameComplete){
-            firstPlayer.runTurn(currentState);
+            currentState = firstPlayer.runTurn(currentState);
             if(!gameComplete){
-                secondPlayer.runTurn(currentState);
+                currentState = secondPlayer.runTurn(currentState);
             }
         }
     }

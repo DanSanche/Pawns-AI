@@ -20,8 +20,8 @@ public class Player {
         return this.pawnList;
     }
 
-    public void runTurn(BoardState currentState){
-        
+    public BoardState runTurn(BoardState currentState){
+        return currentState;
     }
 
     public Boolean isEqual(Player other) {

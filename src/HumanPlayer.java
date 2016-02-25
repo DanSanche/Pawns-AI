@@ -8,7 +8,7 @@ public class HumanPlayer extends Player {
         super(numPawns, isBlack);
     }
     
-    public void runTurn(BoardState currentState){
+    public BoardState runTurn(BoardState currentState){
         Scanner reader = new Scanner(System.in);
         
         Collection<Integer> pawnOptions = currentState.renderPawnOptions(this);
@@ -27,6 +27,9 @@ public class HumanPlayer extends Player {
             System.out.println("Please enter a number representing an available move:");
             moveIdx = reader.nextInt();
         }
+        
+        BoardState newState = new BoardState(currentState, selectedPawn, moveOptions.get(moveIdx-1));
+        return newState;
     }
 
 }
