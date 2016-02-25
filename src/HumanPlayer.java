@@ -15,13 +15,15 @@ public class HumanPlayer extends Player {
         System.out.println("Which pawn do you want to move?: ");
         int pawnIdx = reader.nextInt();
         Pawn selectedPawn = null;
+        List<Integer> moveOptions = null;
         while(selectedPawn==null){
             if(!pawnOptions.contains(new Integer(pawnIdx-1))){
                 System.out.println("Please enter a number representing a pawn on the board:");
                 pawnIdx = reader.nextInt();
             } else {
                 selectedPawn = this.getPawnList().get(pawnIdx-1);
-                if(currentState.nextOptionsForPawn(selectedPawn).size()==0){
+                moveOptions = currentState.nextOptionsForPawn(selectedPawn);
+                if(moveOptions.size()==0){
                     selectedPawn = null;
                     pawnOptions = currentState.renderPawnOptions(this);
                     System.out.println("No moves available for that pawn. Select another:");
@@ -30,12 +32,17 @@ public class HumanPlayer extends Player {
             }
         }
         
-        List<Integer> moveOptions = currentState.renderMoveOptions(this, selectedPawn);
-        System.out.println("Which move do you want to make?:");
-        int moveIdx = reader.nextInt();
-        while(moveIdx < 1 || moveIdx > moveOptions.size()){
-            System.out.println("Please enter a number representing an available move:");
+        int moveIdx;
+        if(moveOptions.size() == 1){
+            moveIdx = 1;
+        } else {
+            currentState.renderMoveOptions(this, selectedPawn);
+            System.out.println("Which move do you want to make?:");
             moveIdx = reader.nextInt();
+            while(moveIdx < 1 || moveIdx > moveOptions.size()){
+                System.out.println("Please enter a number representing an available move:");
+                moveIdx = reader.nextInt();
+            }
         }
         
         BoardState newState = new BoardState(currentState, selectedPawn, moveOptions.get(moveIdx-1));
