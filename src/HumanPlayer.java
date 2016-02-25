@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class HumanPlayer extends Player {
 
-    public HumanPlayer(int numPawns) {
-        super(numPawns);
+    public HumanPlayer(int numPawns, Boolean isBlack) {
+        super(numPawns, isBlack);
     }
     
     public void runTurn(){

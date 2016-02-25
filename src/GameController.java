@@ -11,8 +11,8 @@ public class GameController {
 
     
     public void setupFreshGame(int boardSize){
-        this.firstPlayer = new HumanPlayer(boardSize);
-        this.secondPlayer = new HumanPlayer(boardSize);
+        this.firstPlayer = new HumanPlayer(boardSize, false);
+        this.secondPlayer = new HumanPlayer(boardSize, true);
         this.gameBoard = new Board(boardSize, this.firstPlayer, this.secondPlayer);
     }
     

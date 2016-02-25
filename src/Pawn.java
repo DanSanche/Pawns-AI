@@ -1,13 +1,23 @@
 
 
 public class Pawn {
+    
+    private Player owner;
 
-    public Pawn() {
-        // TODO Auto-generated constructor stub
+    public Pawn(Player owner) {
+        this.owner = owner;
     }
     
     public String toString(){
-        return "p";
+        if(owner.isBlackTeam()){
+            return "b";
+        } else {
+            return "w";
+        }
+    }
+    
+    public Boolean isSameOwner(Player other){
+        return (owner.isEqual(other));
     }
 
 }
