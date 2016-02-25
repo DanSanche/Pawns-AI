@@ -16,7 +16,7 @@ public class Pawn {
         }
     }
     
-    public Boolean isSameOwner(Player other){
+    public Boolean isOwnedBy(Player other){
         return (owner.isEqual(other));
     }
 

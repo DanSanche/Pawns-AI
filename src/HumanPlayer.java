@@ -6,11 +6,10 @@ public class HumanPlayer extends Player {
         super(numPawns, isBlack);
     }
     
-    public void runTurn(Board gameBoard){
+    public void runTurn(BoardState currentState){
         Scanner reader = new Scanner(System.in);
         
-        String boardState = gameBoard.pawnOptionsString(this);
-        System.out.print(boardState);
+        currentState.renderPawnOptions(this);;
         
         System.out.println("Which pawn do you want to move?: ");
         int n = reader.nextInt();
