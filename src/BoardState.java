@@ -180,6 +180,32 @@ public class BoardState {
         return validOptions;
     }
     
+    public void renderState(){
+        String boardString = "";
+        //initialize all spaces to empty
+        ArrayList<String> tileStrings = new ArrayList<String>(this.boardSize * this.boardSize);
+        for(int i=0; i<this.boardSize*this.boardSize; i++){
+            tileStrings.add(i, ".");
+        }
+        
+        //add pawns to empty spaces
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        while(it.hasNext()){
+            Integer thisPos = it.next();
+            Pawn thisPawn = this.pawnPositions.get(thisPos);
+            tileStrings.set(thisPos, thisPawn.toString());
+        }
+        //render as string
+        for(int i=0; i<tileStrings.size(); i++){
+            if(i%(this.boardSize) == 0 && i!=0){
+                boardString = boardString + "\n";
+            }
+            String tileValue = tileStrings.get(i);
+            boardString = boardString + " " + tileValue + " ";
+        }
+        System.out.println(boardString);
+    }
+    
     public Boolean playerCanMove(Player selectedPlayer){
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         Boolean hasMovesLeft = false;

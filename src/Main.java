@@ -1,4 +1,3 @@
-
 public class Main {
 
     public static void main(String [] args){
@@ -13,14 +12,18 @@ public class Main {
         while(!gameComplete){
             Boolean whiteCanMove = currentState.playerCanMove(whitePlayer);
             if(whiteCanMove){
+                System.out.println("\n\n\nWHITE'S TURN\n----------------");
                 currentState = whitePlayer.runTurn(currentState);
             }
             Boolean blackCanMove = currentState.playerCanMove(blackPlayer);
             if(blackCanMove){
+                System.out.println("\n\n\nBLACK'S TURN\n----------------");
                 currentState = blackPlayer.runTurn(currentState);
             }
             gameComplete = !(whiteCanMove || blackCanMove);
         }
+        System.out.println("\n\n\n");
+        currentState.renderState();
         System.out.println("Game Complete");
     }
 
