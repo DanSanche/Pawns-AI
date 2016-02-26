@@ -4,7 +4,6 @@ public class TerminalNode extends GameNode {
 
     public TerminalNode(BoardState rootState, Boolean playerIsBlack) {
         super(rootState, playerIsBlack);
-        this.bestOption = rootState;
     }
     
     public int findBestOption(int depth){

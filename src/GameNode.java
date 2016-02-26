@@ -7,7 +7,6 @@ public class GameNode {
     
     protected BoardState rootState;
     protected Boolean isBlack;
-    protected BoardState bestOption;
 
     public GameNode(BoardState rootState, Boolean playerIsBlack) {
         this.rootState = rootState;

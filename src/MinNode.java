@@ -27,7 +27,6 @@ public class MinNode extends GameNode {
                 nextCost = nextNode.findBestOption(depth);
                 if(nextCost < minVal){
                     minVal = nextCost;
-                    this.bestOption = nextState;
                 }
             }
             return minVal;
@@ -41,7 +40,6 @@ public class MinNode extends GameNode {
                 //the game is complete. Create a terminal node to calculate our costs
                 nextNode = new TerminalNode(this.rootState, !this.isBlack);
             }
-            this.bestOption = this.rootState;
             return nextNode.findBestOption(depth-1);
         }
     }

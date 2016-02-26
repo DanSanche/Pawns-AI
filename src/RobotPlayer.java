@@ -9,9 +9,8 @@ public class RobotPlayer extends Player {
 
     public BoardState runTurn(BoardState currentState){
         MaxNode rootNode = new MaxNode(currentState, this.isBlackTeam());
-        int maxScore = rootNode.findBestOption(this.depth);
-        System.out.println("max score: " + maxScore);
-        return rootNode.bestOption;
+        BoardState finalState = rootNode.findFinalState(this.depth);
+        return finalState;
     }
 
 }

@@ -2,9 +2,16 @@ import java.util.Iterator;
 import java.util.List;
 
 public class MaxNode extends GameNode {
+    
+    private BoardState bestState;
 
     public MaxNode(BoardState rootState, Boolean playerIsBlack) {
         super(rootState, playerIsBlack);
+    }
+    
+    public BoardState findFinalState(int depth){
+        findBestOption(depth);
+        return bestState;
     }
 
     public int findBestOption(int depth){
@@ -13,14 +20,15 @@ public class MaxNode extends GameNode {
         if(!successorOptions.isEmpty()){
             //we have options. Find the max of them
             Iterator<BoardState> it = successorOptions.iterator();
-            int maxVal = 0;
+            int maxVal = -1;
             while(it.hasNext() && maxVal<maxScorePossible){
                 BoardState nextState = it.next();
                 MinNode nextNode = new MinNode(nextState, !this.isBlack);
                 int nextCost = nextNode.findBestOption(depth-1);
+                System.out.println(nextCost + ":" + maxVal);
                 if(nextCost > maxVal){
                     maxVal = nextCost;
-                    this.bestOption = nextState;
+                    bestState = nextState;
                 }
             }
             return maxVal;
@@ -34,7 +42,6 @@ public class MaxNode extends GameNode {
                 //the game is complete. Create a terminal node to calculate our costs
                 nextNode = new TerminalNode(this.rootState, this.isBlack);
             }
-            this.bestOption = this.rootState;
             return nextNode.findBestOption(depth-1);
         }
     }
