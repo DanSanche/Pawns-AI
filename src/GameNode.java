@@ -6,7 +6,7 @@ public class GameNode {
     
     protected BoardState rootState;
     protected Boolean isBlack;
-    protected Boolean debugOn = false;
+    protected Boolean debugOn = true;
 
     public GameNode(BoardState rootState, Boolean playerIsBlack) {
         this.rootState = rootState;

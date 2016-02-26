@@ -27,12 +27,12 @@ public class MinNode extends GameNode {
                 if(nextCost < beta){
                     beta = nextCost;
                 }
-                if(this.debugOn){
-                    for(int i=0; i<depth; i++){
-                        System.out.print("                     ");
-                    }
-                    System.out.println("min " +depth + ": " + nextCost);
+            }
+            if(this.debugOn){
+                for(int i=0; i<depth; i++){
+                    System.out.print("                     ");
                 }
+                System.out.println("min " +depth + ": " + beta);
             }
             return beta;
         } else {
