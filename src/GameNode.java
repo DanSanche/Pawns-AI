@@ -21,6 +21,10 @@ public class GameNode {
         
         List<BoardState> resultsList = new LinkedList<BoardState>();
         
+        if(this.rootState.gameCompletionState() != GameCompletion.Game_Ongoing){
+            return resultsList;
+        }
+        
         List<Integer> positionList = this.rootState.pawnPositionsForPlayer(this.isBlack);
         Iterator<Integer> it = positionList.iterator();
         while(it.hasNext()){
