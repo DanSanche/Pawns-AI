@@ -12,13 +12,13 @@ public class TerminalNode extends GameNode {
         GameCompletion state = this.rootState.gameCompletionState();
         if(state == GameCompletion.Black_More_Pawns || state == GameCompletion.Black_Reached_End){
             if(this.isBlack){
-                stateValue = this.rootState.boardSize;
+                stateValue =100;
             } else {
                 stateValue = 0;
             }
         } else if(state == GameCompletion.White_More_Pawns || state == GameCompletion.White_Reached_End){
             if(!this.isBlack){
-                stateValue = this.rootState.boardSize;
+                stateValue = 100;
             } else {
                 stateValue = 0;
             }
@@ -33,6 +33,7 @@ public class TerminalNode extends GameNode {
     
     public int findUtilityValue(){
         int maxLevel = 0;
+        int enemyMaxLevel = 0;
         Iterator<Integer> it = this.rootState.pawnPositions.keySet().iterator();
         while(it.hasNext()){
             Integer pos = it.next();
@@ -46,9 +47,18 @@ public class TerminalNode extends GameNode {
                 if(thisLevel > maxLevel){
                     maxLevel = thisLevel;
                 }
+            } else {
+                int thisLevel = pos / this.rootState.boardSize;
+                //black pawns start at bottom and move to top. Invert this level
+                if(nextPawn.isBlackTeam()){
+                    thisLevel = Math.abs(this.rootState.boardSize - (thisLevel+1));
+                }
+                if(thisLevel > enemyMaxLevel){
+                    enemyMaxLevel = thisLevel;
+                }
             }
         }
-        return maxLevel;
+        return maxLevel + Math.abs(this.rootState.boardSize - (enemyMaxLevel+1));
     }
 
 }

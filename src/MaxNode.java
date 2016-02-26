@@ -10,8 +10,9 @@ public class MaxNode extends GameNode {
     }
     
     public BoardState findFinalState(int depth){
-        int maxValPossible = this.rootState.boardSize -1;
-        findBestOption(depth, Integer.MIN_VALUE, maxValPossible);
+        int maxValPossible = 100;
+        int best = findBestOption(depth, Integer.MIN_VALUE, maxValPossible);
+        System.out.println(best);
         return bestState;
     }
 
