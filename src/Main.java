@@ -44,15 +44,11 @@ public class Main {
             if(whiteCanMove){
                 System.out.println("\n\n\nWHITE'S TURN\n----------------");
                 currentState = whitePlayer.runTurn(currentState);
-            } else {
-                System.out.println("White is stuck");
             }
             Boolean blackCanMove = currentState.playerCanMove(blackPlayer);
             if(blackCanMove){
                 System.out.println("\n\n\nBLACK'S TURN\n----------------");
                 currentState = blackPlayer.runTurn(currentState);
-            } else {
-                System.out.println("Black is stuck");
             }
             gameComplete = !(whiteCanMove || blackCanMove);
         }
