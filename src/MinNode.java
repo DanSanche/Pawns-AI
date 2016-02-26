@@ -8,12 +8,11 @@ public class MinNode extends GameNode {
         super(rootState, playerIsBlack);
     }
     
-    public int findBestOption(int depth){
+    public int findBestOption(int depth,  int alpha, int beta){
         List<BoardState> successorOptions = this.findSuccessorStates();
         if(!successorOptions.isEmpty()){
             Iterator<BoardState> it = successorOptions.iterator();
-            int minVal = Integer.MAX_VALUE;
-            while(it.hasNext()){
+            while(it.hasNext() && alpha < beta){
                 int nextCost;
                 BoardState nextState = it.next();
                 GameNode nextNode;
@@ -24,12 +23,12 @@ public class MinNode extends GameNode {
                     //more levels. Make another max node
                     nextNode = new MaxNode(nextState, !this.isBlack);
                 }
-                nextCost = nextNode.findBestOption(depth);
-                if(nextCost < minVal){
-                    minVal = nextCost;
+                nextCost = nextNode.findBestOption(depth, alpha, beta);
+                if(nextCost < beta){
+                    beta = nextCost;
                 }
             }
-            return minVal;
+            return beta;
         } else {
             GameNode nextNode;
             GameCompletion state = this.rootState.gameCompletionState();
@@ -40,18 +39,8 @@ public class MinNode extends GameNode {
                 //the game is complete. Create a terminal node to calculate our costs
                 nextNode = new TerminalNode(this.rootState, !this.isBlack);
             }
-            return nextNode.findBestOption(depth-1);
+            return nextNode.findBestOption(depth-1, alpha, beta);
         }
     }
     
-    public void printTree(int depth, Queue<GameNode>printQueue){
-        List<BoardState> successors = this.findSuccessorStates();
-        Iterator<BoardState> it = successors.iterator();
-        while(it.hasNext()){
-            BoardState nextState = it.next();
-            MaxNode nextNode = new MaxNode(nextState, !this.isBlack);
-            printQueue.add(nextNode);
-            nextNode.printTree(depth-1, printQueue);
-        }
-    }
 }

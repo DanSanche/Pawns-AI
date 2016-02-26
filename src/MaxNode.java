@@ -10,27 +10,26 @@ public class MaxNode extends GameNode {
     }
     
     public BoardState findFinalState(int depth){
-        findBestOption(depth);
+        int maxValPossible = this.rootState.boardSize -1;
+        findBestOption(depth, Integer.MIN_VALUE, maxValPossible);
         return bestState;
     }
 
-    public int findBestOption(int depth){
-        int maxScorePossible = this.rootState.boardSize -1;
+    public int findBestOption(int depth,  int alpha, int beta){
         List<BoardState> successorOptions = this.findSuccessorStates();
         if(!successorOptions.isEmpty()){
             //we have options. Find the max of them
             Iterator<BoardState> it = successorOptions.iterator();
-            int maxVal = -1;
-            while(it.hasNext() && maxVal<maxScorePossible){
+            while(it.hasNext() && alpha<beta){
                 BoardState nextState = it.next();
                 MinNode nextNode = new MinNode(nextState, !this.isBlack);
-                int nextCost = nextNode.findBestOption(depth-1);
-                if(nextCost > maxVal){
-                    maxVal = nextCost;
+                int nextCost = nextNode.findBestOption(depth-1, alpha, beta);
+                if(nextCost > alpha){
+                    alpha = nextCost;
                     bestState = nextState;
                 }
             }
-            return maxVal;
+            return alpha;
         } else {
             GameNode nextNode;
             GameCompletion state = this.rootState.gameCompletionState();
@@ -41,7 +40,7 @@ public class MaxNode extends GameNode {
                 //the game is complete. Create a terminal node to calculate our costs
                 nextNode = new TerminalNode(this.rootState, this.isBlack);
             }
-            return nextNode.findBestOption(depth-1);
+            return nextNode.findBestOption(depth-1, alpha, beta);
         }
     }
 }

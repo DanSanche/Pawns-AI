@@ -10,6 +10,7 @@ public class RobotPlayer extends Player {
     public BoardState runTurn(BoardState currentState){
         MaxNode rootNode = new MaxNode(currentState, this.isBlackTeam());
         BoardState finalState = rootNode.findFinalState(this.depth);
+        finalState.renderState();
         return finalState;
     }
 

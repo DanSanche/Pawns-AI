@@ -13,7 +13,7 @@ public class GameNode {
         this.isBlack = playerIsBlack;
     }
     
-    public int findBestOption(int depth){
+    public int findBestOption(int depth, int alpha, int beta){
         return 0;
     }
     
@@ -38,15 +38,5 @@ public class GameNode {
         return resultsList;
     }
 
-    public void printTree(int depth, Queue<GameNode>printQueue){
-        List<BoardState> successors = this.findSuccessorStates();
-        Iterator<BoardState> it = successors.iterator();
-        while(it.hasNext()){
-            BoardState nextState = it.next();
-            MinNode nextNode = new MinNode(nextState, !this.isBlack);
-            printQueue.add(nextNode);
-            nextNode.printTree(depth-1, printQueue);
-        }
-    }
    
 }
