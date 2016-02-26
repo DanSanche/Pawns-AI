@@ -25,7 +25,6 @@ public class MaxNode extends GameNode {
                 BoardState nextState = it.next();
                 MinNode nextNode = new MinNode(nextState, !this.isBlack);
                 int nextCost = nextNode.findBestOption(depth-1);
-                System.out.println(nextCost + ":" + maxVal);
                 if(nextCost > maxVal){
                     maxVal = nextCost;
                     bestState = nextState;
