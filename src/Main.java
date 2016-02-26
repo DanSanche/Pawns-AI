@@ -5,8 +5,9 @@ public class Main {
     private static Scanner reader;
 
     public static void main(String [] args){
+        int turns = 0;
         int boardSize = 5;
-        int depth = 1;
+        int depth = 7;
         reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;
@@ -38,6 +39,7 @@ public class Main {
         //run the game loop
         Boolean gameComplete = false;
         while(!gameComplete){
+            turns++;
             Boolean whiteCanMove = currentState.playerCanMove(whitePlayer);
             if(whiteCanMove){
                 System.out.println("\n\n\nWHITE'S TURN\n----------------");
@@ -58,6 +60,7 @@ public class Main {
         System.out.println("\n\n\n----------------");
         currentState.renderState();
         System.out.println("\nPwned!!");
+        System.out.println(turns + " turns used");
     }
     
     private static Boolean isValidInput(String input){
