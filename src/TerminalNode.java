@@ -6,7 +6,7 @@ public class TerminalNode extends GameNode {
         super(rootState, playerIsBlack);
     }
     
-    public int findBestOption(int depth){
+    public int findBestOption(int depth, int alpha, int beta){
         int stateValue = 0;
         //if the game is over, we can assign a max or a min value depending on the result
         GameCompletion state = this.rootState.gameCompletionState();
@@ -28,7 +28,6 @@ public class TerminalNode extends GameNode {
             //if no winner was decided, return the utility value of the state
             stateValue = this.findUtilityValue();
         }
-        System.out.println("max score:" + stateValue);
         return stateValue;
     }
     
