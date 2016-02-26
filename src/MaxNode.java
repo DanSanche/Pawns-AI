@@ -30,6 +30,12 @@ public class MaxNode extends GameNode {
                     alpha = nextCost;
                     bestState = nextState;
                 }
+                if(this.debugOn){
+                    for(int i=0; i<depth; i++){
+                        System.out.print("              ");
+                    }
+                    System.out.println("max " +depth + ": " + nextCost);
+                }
             }
             result = alpha;
         } else {

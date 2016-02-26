@@ -28,6 +28,12 @@ public class TerminalNode extends GameNode {
             //if no winner was decided, return the utility value of the state
             stateValue = this.findUtilityValue();
         }
+        if(this.debugOn){
+            for(int i=0; i<depth; i++){
+                System.out.print("              ");
+            }
+            System.out.println("term " +depth + ": " + stateValue);
+        }
         return stateValue;
     }
     

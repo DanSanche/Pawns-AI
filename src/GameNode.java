@@ -1,12 +1,12 @@
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class GameNode {
     
     protected BoardState rootState;
     protected Boolean isBlack;
+    protected Boolean debugOn = false;
 
     public GameNode(BoardState rootState, Boolean playerIsBlack) {
         this.rootState = rootState;
