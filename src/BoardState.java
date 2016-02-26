@@ -216,15 +216,25 @@ public class BoardState {
             if(!hasMovesLeft && thisPawn.isOwnedBy(selectedPlayer)){
                 hasMovesLeft = (this.nextOptionsForPawn(thisPawn).size() > 0);
             }
+        }
+        return (!pawnReachedEnd() && hasMovesLeft);
+    }
+    
+    public Boolean pawnReachedEnd(){
+        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        while(it.hasNext()){
+            Integer pos = it.next();
+            Pawn thisPawn = this.pawnPositions.get(pos);
             if(thisPawn.isBlackTeam() && pos.intValue() < this.boardSize){
                 //black has reached the end. Game over
-                return false;
+                return true;
             } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (this.boardSize*(this.boardSize-1))){
                 //white has reached the end. Game over
-                return false;
+                return true;
             }
         }
-        return hasMovesLeft;
+        return false;
+        
     }
     
     public Player findWinner(Player black, Player white){

@@ -18,6 +18,10 @@ public class GameNode {
     }
     
     protected List<BoardState> findSuccessorStates(){
+        if(this.rootState.pawnReachedEnd()){
+            return new LinkedList<BoardState>();
+        }
+        
         List<BoardState> resultsList = new LinkedList<BoardState>();
         
         List<Integer> positionList = this.rootState.pawnPositionsForPlayer(this.isBlack);
