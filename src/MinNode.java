@@ -16,7 +16,7 @@ public class MinNode extends GameNode {
                 int nextCost;
                 BoardState nextState = it.next();
                 GameNode nextNode;
-                if(depth == 0){
+                if(depth <= 0){
                     //terminal node. use base cost
                     nextNode = new TerminalNode(nextState, !this.isBlack);
                 } else {
