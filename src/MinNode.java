@@ -34,7 +34,13 @@ public class MinNode extends GameNode {
             GameCompletion state = this.rootState.gameCompletionState();
             if(state == GameCompletion.Game_Ongoing){
                 //we are stuck, but our opponent isn't. The game isn't over. Let them make a move
-                nextNode = new MaxNode(this.rootState, !this.isBlack);
+                if(depth <= 0){
+                    //no time to keep looking. How good is this sate for our enemy?
+                    nextNode = new TerminalNode(this.rootState, !this.isBlack);
+                } else {
+                    //more levels. Let the enemy make a move
+                    nextNode = new MaxNode(this.rootState, !this.isBlack);
+                }
             } else {
                 //the game is complete. Create a terminal node to calculate our costs
                 nextNode = new TerminalNode(this.rootState, !this.isBlack);
