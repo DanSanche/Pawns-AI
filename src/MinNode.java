@@ -1,5 +1,6 @@
 import java.util.Iterator;
 import java.util.List;
+import java.util.Queue;
 
 public class MinNode extends GameNode {
 
@@ -31,9 +32,28 @@ public class MinNode extends GameNode {
             }
             return minVal;
         } else {
-            //if there are no other options, return the value of this state
-            TerminalNode lastNode = new TerminalNode(this.rootState, !this.isBlack);
-            return lastNode.findBestOption(depth);
+            GameNode nextNode;
+            GameCompletion state = this.rootState.gameCompletionState();
+            if(state == GameCompletion.Game_Ongoing){
+                //we are stuck, but our opponent isn't. The game isn't over. Let them make a move
+                nextNode = new MaxNode(this.rootState, !this.isBlack);
+            } else {
+                //the game is complete. Create a terminal node to calculate our costs
+                nextNode = new TerminalNode(this.rootState, !this.isBlack);
+            }
+            this.bestOption = this.rootState;
+            return nextNode.findBestOption(depth-1);
+        }
+    }
+    
+    public void printTree(int depth, Queue<GameNode>printQueue){
+        List<BoardState> successors = this.findSuccessorStates();
+        Iterator<BoardState> it = successors.iterator();
+        while(it.hasNext()){
+            BoardState nextState = it.next();
+            MaxNode nextNode = new MaxNode(nextState, !this.isBlack);
+            printQueue.add(nextNode);
+            nextNode.printTree(depth-1, printQueue);
         }
     }
 }

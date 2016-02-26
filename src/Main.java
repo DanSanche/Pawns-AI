@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String [] args){
         int boardSize = 5;
-        int depth = 5;
+        int depth = 1;
         reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;
@@ -58,12 +58,6 @@ public class Main {
         System.out.println("\n\n\n----------------");
         currentState.renderState();
         System.out.println("\nPwned!!");
-        Player winner = currentState.findWinner(blackPlayer, whitePlayer);
-        if(winner == null){
-            System.out.println("Tie Game");
-        } else {
-            System.out.println(winner.toString() + " Wins!");
-        }
     }
     
     private static Boolean isValidInput(String input){

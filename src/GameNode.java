@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 public class GameNode {
     
@@ -18,9 +19,6 @@ public class GameNode {
     }
     
     protected List<BoardState> findSuccessorStates(){
-        if(this.rootState.pawnReachedEnd()){
-            return new LinkedList<BoardState>();
-        }
         
         List<BoardState> resultsList = new LinkedList<BoardState>();
         
@@ -41,4 +39,15 @@ public class GameNode {
         return resultsList;
     }
 
+    public void printTree(int depth, Queue<GameNode>printQueue){
+        List<BoardState> successors = this.findSuccessorStates();
+        Iterator<BoardState> it = successors.iterator();
+        while(it.hasNext()){
+            BoardState nextState = it.next();
+            MinNode nextNode = new MinNode(nextState, !this.isBlack);
+            printQueue.add(nextNode);
+            nextNode.printTree(depth-1, printQueue);
+        }
+    }
+   
 }

@@ -11,6 +11,7 @@ public class MaxNode extends GameNode {
         int maxScorePossible = this.rootState.boardSize -1;
         List<BoardState> successorOptions = this.findSuccessorStates();
         if(!successorOptions.isEmpty()){
+            //we have options. Find the max of them
             Iterator<BoardState> it = successorOptions.iterator();
             int maxVal = 0;
             while(it.hasNext() && maxVal<maxScorePossible){
@@ -24,9 +25,17 @@ public class MaxNode extends GameNode {
             }
             return maxVal;
         } else {
-            //if there are no other options, return the value of this state
-            TerminalNode lastNode = new TerminalNode(this.rootState, this.isBlack);
-            return lastNode.findBestOption(depth);
+            GameNode nextNode;
+            GameCompletion state = this.rootState.gameCompletionState();
+            if(state == GameCompletion.Game_Ongoing){
+                //we are stuck, but our opponent isn't. The game isn't over. Let them make a move
+                nextNode = new MinNode(this.rootState, !this.isBlack);
+            } else {
+                //the game is complete. Create a terminal node to calculate our costs
+                nextNode = new TerminalNode(this.rootState, this.isBlack);
+            }
+            this.bestOption = this.rootState;
+            return nextNode.findBestOption(depth-1);
         }
     }
 }

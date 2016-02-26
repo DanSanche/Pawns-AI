@@ -217,55 +217,52 @@ public class BoardState {
                 hasMovesLeft = (this.nextOptionsForPawn(thisPawn).size() > 0);
             }
         }
-        return (!pawnReachedEnd() && hasMovesLeft);
+        return (gameCompletionState() == GameCompletion.Game_Ongoing && hasMovesLeft);
     }
+
     
-    public Boolean pawnReachedEnd(){
-        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
-        while(it.hasNext()){
-            Integer pos = it.next();
-            Pawn thisPawn = this.pawnPositions.get(pos);
-            if(thisPawn.isBlackTeam() && pos.intValue() < this.boardSize){
-                //black has reached the end. Game over
-                return true;
-            } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (this.boardSize*(this.boardSize-1))){
-                //white has reached the end. Game over
-                return true;
-            }
-        }
-        return false;
-        
-    }
-    
-    public Player findWinner(Player black, Player white){
+    public GameCompletion gameCompletionState(){
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         
         int blackCount = 0;
         int whiteCount = 0;
+        
+        Boolean whiteCanMove = false;
+        Boolean blackCanMove = false;
                
         while(it.hasNext()){
             Integer pos = it.next();
             Pawn thisPawn = this.pawnPositions.get(pos);
             //increment number of living pawns for right team
-            if(thisPawn.isOwnedBy(black)){
+            if(thisPawn.isBlackTeam()){
                blackCount++;
-            } else if (thisPawn.isOwnedBy(white)){
+               if(!blackCanMove){
+                   blackCanMove = (this.nextOptionsForPawn(thisPawn).size() > 0);
+               }
+            } else {
                 whiteCount++;
+                if(!whiteCanMove){
+                    whiteCanMove = (this.nextOptionsForPawn(thisPawn).size() > 0);
+                }
             }
             if(thisPawn.isBlackTeam() && pos.intValue() < this.boardSize){
                 //black has reached the end. Black won
-                return black;
+                return GameCompletion.Black_Reached_End;
             } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (this.boardSize*(this.boardSize-1))){
                 //white has reached the end. White won
-                return white;
+                return GameCompletion.White_Reached_End;
             }
         }
-        if(blackCount > whiteCount){
-            return black;
-        } else if(whiteCount > blackCount){
-            return white;
+        if(!blackCanMove && !whiteCanMove){
+            if(blackCount > whiteCount){
+                return GameCompletion.Black_More_Pawns;
+            } else if(whiteCount > blackCount){
+                return GameCompletion.White_More_Pawns;
+            } else {
+            return GameCompletion.Stalemate;
+            }
         } else {
-            return null;
+            return GameCompletion.Game_Ongoing;
         }
     }
     

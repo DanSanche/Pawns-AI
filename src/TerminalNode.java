@@ -8,8 +8,29 @@ public class TerminalNode extends GameNode {
     }
     
     public int findBestOption(int depth){
-        //TODO: if there are no moves left, count find if this option is a win or loss
-        
+        //if the game is over, we can assign a max or a min value depending on the result
+        GameCompletion state = this.rootState.gameCompletionState();
+        if(state == GameCompletion.Black_More_Pawns || state == GameCompletion.Black_Reached_End){
+            if(this.isBlack){
+                return this.rootState.boardSize;
+            } else {
+                return 0;
+            }
+        } else if(state == GameCompletion.White_More_Pawns || state == GameCompletion.White_Reached_End){
+            if(!this.isBlack){
+                return this.rootState.boardSize;
+            } else {
+                return 0;
+            }
+        } else if (state == GameCompletion.Stalemate){
+            return 0;
+        } else {
+            //if no winner was decided, return the utility value of the state
+            return this.findUtilityValue();
+        }
+    }
+    
+    public int findUtilityValue(){
         int maxLevel = 0;
         Iterator<Integer> it = this.rootState.pawnPositions.keySet().iterator();
         while(it.hasNext()){
