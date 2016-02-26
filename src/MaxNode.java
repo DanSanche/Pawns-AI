@@ -12,11 +12,12 @@ public class MaxNode extends GameNode {
     public BoardState findFinalState(int depth){
         int maxValPossible = 100;
         int best = findBestOption(depth, Integer.MIN_VALUE, maxValPossible);
-        System.out.println(best);
+        System.out.println("max: " + best);
         return bestState;
     }
 
     public int findBestOption(int depth,  int alpha, int beta){
+        int result;
         List<BoardState> successorOptions = this.findSuccessorStates();
         if(!successorOptions.isEmpty()){
             //we have options. Find the max of them
@@ -30,7 +31,7 @@ public class MaxNode extends GameNode {
                     bestState = nextState;
                 }
             }
-            return alpha;
+            result = alpha;
         } else {
             GameNode nextNode;
             GameCompletion state = this.rootState.gameCompletionState();
@@ -41,7 +42,8 @@ public class MaxNode extends GameNode {
                 //the game is complete. Create a terminal node to calculate our costs
                 nextNode = new TerminalNode(this.rootState, this.isBlack);
             }
-            return nextNode.findBestOption(depth-1, alpha, beta);
+            result = nextNode.findBestOption(depth-1, alpha, beta);
         }
+        return result;
     }
 }
