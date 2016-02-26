@@ -10,6 +10,7 @@ public class BoardState {
     Hashtable<Integer, Pawn> pawnPositions;
     
     int boardSize;
+    private GameCompletion cahcedState = null;
 
     public BoardState(int boardSize, Player firstTeam, Player secondTeam) {
         //create board spaces
@@ -222,6 +223,11 @@ public class BoardState {
 
     
     public GameCompletion gameCompletionState(){
+        
+        if(this.cahcedState != null){
+            return this.cahcedState;
+        }
+        
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         
         int blackCount = 0;
