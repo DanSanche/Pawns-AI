@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String [] args){
         int turns = 0;
-        int depth = 3;
+        int depth = 7;
         reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;

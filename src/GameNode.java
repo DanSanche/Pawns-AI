@@ -42,6 +42,7 @@ public class GameNode {
             while(optionsIt.hasNext()){
                 Integer thisOption = optionsIt.next();
                 BoardState newState = new BoardState(this.rootState, nextPawn, thisOption);
+                int stateValue = newState.findUtilityValue(isBlack);
                 resultsList.add(newState);
             }
         }
