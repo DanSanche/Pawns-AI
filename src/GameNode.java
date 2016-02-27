@@ -6,19 +6,25 @@ public class GameNode {
     
     protected BoardState rootState;
     protected Boolean isBlack;
-    protected Boolean debugOn = true;
+    protected List<GameNode> childStates;
+    protected int nodeValue;
+    protected String printPrefix = "";
 
-    public GameNode(BoardState rootState, Boolean playerIsBlack) {
+    public GameNode(BoardState rootState, Boolean playerIsBlack, int depth, int alpha, int beta) {
         this.rootState = rootState;
         this.isBlack = playerIsBlack;
+        this.nodeValue = this.findBestOption(depth, alpha, beta);
     }
     
-    public int findBestOption(int depth, int alpha, int beta){
+    public int getNodeValue(){
+        return this.nodeValue;
+    }
+    
+    protected int findBestOption(int depth, int alpha, int beta){
         return 0;
     }
     
     protected List<BoardState> findSuccessorStates(){
-        
         List<BoardState> resultsList = new LinkedList<BoardState>();
         
         if(this.rootState.gameCompletionState() != GameCompletion.Game_Ongoing){
@@ -40,6 +46,20 @@ public class GameNode {
             }
         }
         return resultsList;
+    }
+    
+    public void print() {
+        print("", true);
+    }
+
+    private void print(String prefix, boolean isTail) {
+        System.out.println(prefix + (isTail ? "└── " : "├── ") + this.printPrefix + this.nodeValue);
+        for (int i = 0; i < this.childStates.size() - 1; i++) {
+            this.childStates.get(i).print(prefix + (isTail ? "    " : "│   "), false);
+        }
+        if (this.childStates.size() > 0) {
+            this.childStates.get(this.childStates.size() - 1).print(prefix + (isTail ?"    " : "│   "), true);
+        }
     }
 
    

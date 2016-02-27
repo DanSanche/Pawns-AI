@@ -1,12 +1,14 @@
 import java.util.Iterator;
+import java.util.LinkedList;
 
 public class TerminalNode extends GameNode {
 
-    public TerminalNode(BoardState rootState, Boolean playerIsBlack) {
-        super(rootState, playerIsBlack);
+    public TerminalNode(BoardState rootState, Boolean playerIsBlack, int depth, int alpha, int beta) {
+        super(rootState, playerIsBlack, depth, alpha, beta);
+        this.childStates = new LinkedList<GameNode>();
     }
     
-    public int findBestOption(int depth, int alpha, int beta){
+    protected int findBestOption(int depth, int alpha, int beta){
         int stateValue = 0;
         //if the game is over, we can assign a max or a min value depending on the result
         GameCompletion state = this.rootState.gameCompletionState();
@@ -27,12 +29,6 @@ public class TerminalNode extends GameNode {
         } else {
             //if no winner was decided, return the utility value of the state
             stateValue = this.findUtilityValue();
-        }
-        if(this.debugOn){
-            for(int i=0; i<depth; i++){
-                System.out.print("              ");
-            }
-            System.out.println("term " +depth + ": " + stateValue);
         }
         return stateValue;
     }

@@ -1,14 +1,16 @@
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 public class MinNode extends GameNode {
 
-    public MinNode(BoardState rootState, Boolean playerIsBlack) {
-        super(rootState, playerIsBlack);
+    public MinNode(BoardState rootState, Boolean playerIsBlack, int depth, int alpha, int beta) {
+        super(rootState, playerIsBlack, depth, alpha, beta);
+        this.printPrefix = "-";
     }
     
-    public int findBestOption(int depth,  int alpha, int beta){
+    protected int findBestOption(int depth,  int alpha, int beta){
+        this.childStates = new LinkedList<GameNode>();
         List<BoardState> successorOptions = this.findSuccessorStates();
         if(!successorOptions.isEmpty()){
             Iterator<BoardState> it = successorOptions.iterator();
@@ -18,21 +20,16 @@ public class MinNode extends GameNode {
                 GameNode nextNode;
                 if(depth <= 0){
                     //terminal node. use base cost
-                    nextNode = new TerminalNode(nextState, !this.isBlack);
+                    nextNode = new TerminalNode(nextState, !this.isBlack, depth, alpha, beta);
                 } else {
                     //more levels. Make another max node
-                    nextNode = new MaxNode(nextState, !this.isBlack);
+                    nextNode = new MaxNode(nextState, !this.isBlack, depth, alpha, beta);
                 }
-                nextCost = nextNode.findBestOption(depth, alpha, beta);
+                this.childStates.add(nextNode);
+                nextCost = nextNode.nodeValue;
                 if(nextCost < beta){
                     beta = nextCost;
                 }
-            }
-            if(this.debugOn){
-                for(int i=0; i<depth; i++){
-                    System.out.print("                     ");
-                }
-                System.out.println("min " +depth + ": " + beta);
             }
             return beta;
         } else {
@@ -42,16 +39,17 @@ public class MinNode extends GameNode {
                 //we are stuck, but our opponent isn't. The game isn't over. Let them make a move
                 if(depth <= 0){
                     //no time to keep looking. How good is this sate for our enemy?
-                    nextNode = new TerminalNode(this.rootState, !this.isBlack);
+                    nextNode = new TerminalNode(this.rootState, !this.isBlack, depth-1, alpha, beta);
                 } else {
                     //more levels. Let the enemy make a move
-                    nextNode = new MaxNode(this.rootState, !this.isBlack);
+                    nextNode = new MaxNode(this.rootState, !this.isBlack, depth-1, alpha, beta);
                 }
             } else {
                 //the game is complete. Create a terminal node to calculate our costs
-                nextNode = new TerminalNode(this.rootState, !this.isBlack);
+                nextNode = new TerminalNode(this.rootState, !this.isBlack, depth-1, alpha, beta);
             }
-            return nextNode.findBestOption(depth-1, alpha, beta);
+            this.childStates.add(nextNode);
+            return nextNode.nodeValue;
         }
     }
     
