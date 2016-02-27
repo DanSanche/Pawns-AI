@@ -55,7 +55,23 @@ public class Main {
         //print out winner information
         System.out.println("\n\n\n----------------");
         currentState.renderState();
-        System.out.println("\nPwned!!");
+        switch(currentState.gameCompletionState()){
+            case White_More_Pawns:
+            case White_Reached_End:
+                System.out.println("\nPwned!!");
+                System.out.println("White Wins!");
+                break;
+            case Black_More_Pawns:
+            case Black_Reached_End:
+                System.out.println("\nPwned!!");
+                System.out.println("Black Wins!");
+                break;
+            case Stalemate:
+                System.out.println("Stalemate");
+                break;
+            default:
+                break;
+        }
         System.out.println(turns + " turns used");
     }
     
