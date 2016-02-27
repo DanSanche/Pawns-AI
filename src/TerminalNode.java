@@ -14,18 +14,18 @@ public class TerminalNode extends GameNode {
         GameCompletion state = this.rootState.gameCompletionState();
         if(state == GameCompletion.Black_More_Pawns || state == GameCompletion.Black_Reached_End){
             if(this.isBlack){
-                stateValue =100;
+                stateValue = UtilityConstants.WIN_VALUE;
             } else {
-                stateValue = 0;
+                stateValue = UtilityConstants.LOSS_VALUE;
             }
         } else if(state == GameCompletion.White_More_Pawns || state == GameCompletion.White_Reached_End){
             if(!this.isBlack){
-                stateValue = 100;
+                stateValue = UtilityConstants.WIN_VALUE;
             } else {
-                stateValue = 0;
+                stateValue = UtilityConstants.LOSS_VALUE;
             }
         } else if (state == GameCompletion.Stalemate){
-            stateValue = 0;
+            stateValue = UtilityConstants.STALEMATE_VALUE;
         } else {
             //if no winner was decided, return the utility value of the state
             stateValue = this.findUtilityValue();
