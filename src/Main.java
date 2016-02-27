@@ -6,7 +6,6 @@ public class Main {
 
     public static void main(String [] args){
         int turns = 0;
-        int boardSize = 5;
         int depth = 3;
         reader = new Scanner(System.in);
         Player whitePlayer;
@@ -19,9 +18,9 @@ public class Main {
         } while(!isValidInput(inputString));
 
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
-            whitePlayer = new HumanPlayer(boardSize, false);
+            whitePlayer = new HumanPlayer(false);
         } else {
-            whitePlayer = new RobotPlayer(boardSize, false, depth);
+            whitePlayer = new RobotPlayer(false, depth);
         }
         
         do {
@@ -29,12 +28,12 @@ public class Main {
             inputString = reader.next();
         } while(!isValidInput(inputString));
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
-            blackPlayer = new HumanPlayer(boardSize, true);
+            blackPlayer = new HumanPlayer(true);
         } else {
-            blackPlayer = new RobotPlayer(boardSize, true, depth);
+            blackPlayer = new RobotPlayer(true, depth);
         }
         
-        BoardState currentState = new BoardState(boardSize, whitePlayer, blackPlayer);
+        BoardState currentState = new BoardState(whitePlayer, blackPlayer);
         
         //run the game loop
         Boolean gameComplete = false;

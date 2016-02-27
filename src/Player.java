@@ -7,10 +7,10 @@ public class Player {
 
     private List<Pawn> pawnList;
     
-    public Player(int numPawns, Boolean isBlack) {
+    public Player(Boolean isBlack) {
         this.isBlackTeam = isBlack;
        pawnList = new LinkedList<Pawn>();
-       for (int i=0; i< numPawns; i++){
+       for (int i=0; i< UtilityConstants.BOARD_SIZE; i++){
            Pawn thisPawn = new Pawn(this);
            pawnList.add(thisPawn);
        }

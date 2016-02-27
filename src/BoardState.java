@@ -9,33 +9,29 @@ public class BoardState {
     
     Hashtable<Integer, Pawn> pawnPositions;
     
-    int boardSize;
     private GameCompletion cahcedState = null;
 
-    public BoardState(int boardSize, Player firstTeam, Player secondTeam) {
+    public BoardState(Player firstTeam, Player secondTeam) {
         //create board spaces
         this.pawnPositions = new Hashtable<Integer, Pawn>();
-
-        this.boardSize = boardSize;
         
         //set up pawns in initial positions
         List<Pawn> firstList = firstTeam.getPawnList();
-        for(int i=0; i<boardSize; i++){
+        for(int i=0; i<UtilityConstants.BOARD_SIZE; i++){
             Pawn thisPawn = firstList.get(i);
             pawnPositions.put(new Integer(i), thisPawn);
         }
         
         List<Pawn> secondList = secondTeam.getPawnList();
-        for(int i=0; i<boardSize; i++){
+        for(int i=0; i<UtilityConstants.BOARD_SIZE; i++){
             Pawn thisPawn = secondList.get(i);
-            int pawnPos = (boardSize * (boardSize-1)) + i;
+            int pawnPos = (UtilityConstants.BOARD_SIZE * (UtilityConstants.BOARD_SIZE-1)) + i;
             pawnPositions.put(new Integer(pawnPos), thisPawn);
         }
     }
     
     public BoardState(BoardState prevState, Pawn movedPawn, Integer newPosition){
         this.pawnPositions = new Hashtable<Integer, Pawn>();
-        this.boardSize = prevState.boardSize;
         
         //add back in other pawns
         Iterator<Integer> it = prevState.pawnPositions.keySet().iterator();
@@ -55,8 +51,9 @@ public class BoardState {
         Collection<Integer> validOptions = new LinkedList<Integer>();
         
         //initialize all spaces to empty
-        ArrayList<String> tileStrings = new ArrayList<String>(this.boardSize * this.boardSize);
-        for(int i=0; i<this.boardSize*this.boardSize; i++){
+        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        ArrayList<String> tileStrings = new ArrayList<String>(numSquares);
+        for(int i=0; i<numSquares; i++){
             tileStrings.add(i, ".");
         }
         
@@ -77,7 +74,7 @@ public class BoardState {
         }
         
         for(int i=0; i<tileStrings.size(); i++){
-            if(i%(this.boardSize) == 0 && i!=0){
+            if(i%(UtilityConstants.BOARD_SIZE) == 0 && i!=0){
                 boardString = boardString + "\n";
             }
             String tileValue = tileStrings.get(i);
@@ -113,12 +110,13 @@ public class BoardState {
         //test one space in front
         int forwardValue;
         if(selectedPawn.isBlackTeam()){
-            forwardValue = pawnPos - this.boardSize;
+            forwardValue = pawnPos - UtilityConstants.BOARD_SIZE;
         } else {
-            forwardValue = pawnPos + this.boardSize;
+            forwardValue = pawnPos + UtilityConstants.BOARD_SIZE;
         }
         //test if it's off the board, or if there's another pawn in the space
-        if(forwardValue >= 0 && forwardValue < this.boardSize*this.boardSize && !this.pawnPositions.containsKey(new Integer(forwardValue))){
+        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        if(forwardValue >= 0 && forwardValue < numSquares && !this.pawnPositions.containsKey(new Integer(forwardValue))){
             validOptions.add(new Integer(forwardValue));
         }
            
@@ -127,7 +125,7 @@ public class BoardState {
         //test if the attack is on the right edge, or if there is no pawn to attack
         Pawn target = this.pawnPositions.get(new Integer(leftAttackValue));
         if(target != null && !target.isOnTeam(selectedPawn) &&
-        leftAttackValue % (this.boardSize) != (this.boardSize-1)){
+        leftAttackValue % (UtilityConstants.BOARD_SIZE) != (UtilityConstants.BOARD_SIZE-1)){
             validOptions.add(new Integer(leftAttackValue));
         }
         
@@ -135,7 +133,7 @@ public class BoardState {
        int rightAttackValue = forwardValue +1;
      //test if the attack is on the left edge, or if there is no pawn to attack
        target = this.pawnPositions.get(new Integer(rightAttackValue));
-       if(target != null && !target.isOnTeam(selectedPawn) && rightAttackValue % (this.boardSize) != (0)){
+       if(target != null && !target.isOnTeam(selectedPawn) && rightAttackValue % (UtilityConstants.BOARD_SIZE) != (0)){
            validOptions.add(new Integer(rightAttackValue));    
        }
        
@@ -147,8 +145,9 @@ public class BoardState {
         List<Integer> validOptions = this.nextOptionsForPawn(selectedPawn);
         
         //initialize all spaces to empty
-        ArrayList<String> tileStrings = new ArrayList<String>(this.boardSize * this.boardSize);
-        for(int i=0; i<this.boardSize*this.boardSize; i++){
+        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        ArrayList<String> tileStrings = new ArrayList<String>(numSquares);
+        for(int i=0; i<numSquares; i++){
             tileStrings.add(i, ".");
         }
         
@@ -171,7 +170,7 @@ public class BoardState {
         
         //render as string
         for(int i=0; i<tileStrings.size(); i++){
-            if(i%(this.boardSize) == 0 && i!=0){
+            if(i%(UtilityConstants.BOARD_SIZE) == 0 && i!=0){
                 boardString = boardString + "\n";
             }
             String tileValue = tileStrings.get(i);
@@ -184,8 +183,9 @@ public class BoardState {
     public void renderState(){
         String boardString = "";
         //initialize all spaces to empty
-        ArrayList<String> tileStrings = new ArrayList<String>(this.boardSize * this.boardSize);
-        for(int i=0; i<this.boardSize*this.boardSize; i++){
+        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        ArrayList<String> tileStrings = new ArrayList<String>(numSquares);
+        for(int i=0; i<numSquares; i++){
             tileStrings.add(i, ".");
         }
         
@@ -198,7 +198,7 @@ public class BoardState {
         }
         //render as string
         for(int i=0; i<tileStrings.size(); i++){
-            if(i%(this.boardSize) == 0 && i!=0){
+            if(i%(UtilityConstants.BOARD_SIZE) == 0 && i!=0){
                 boardString = boardString + "\n";
             }
             String tileValue = tileStrings.get(i);
@@ -251,10 +251,10 @@ public class BoardState {
                     whiteCanMove = (this.nextOptionsForPawn(thisPawn).size() > 0);
                 }
             }
-            if(thisPawn.isBlackTeam() && pos.intValue() < this.boardSize){
+            if(thisPawn.isBlackTeam() && pos.intValue() < UtilityConstants.BOARD_SIZE){
                 //black has reached the end. Black won
                 return GameCompletion.Black_Reached_End;
-            } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (this.boardSize*(this.boardSize-1))){
+            } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (UtilityConstants.BOARD_SIZE*(UtilityConstants.BOARD_SIZE-1))){
                 //white has reached the end. White won
                 return GameCompletion.White_Reached_End;
             }

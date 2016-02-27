@@ -2,8 +2,8 @@ public class RobotPlayer extends Player {
     
     protected int depth;
     
-    public RobotPlayer(int numPawns, Boolean isBlack, int depth) {
-        super(numPawns, isBlack);
+    public RobotPlayer(Boolean isBlack, int depth) {
+        super(isBlack);
         this.depth = depth;
     }
 

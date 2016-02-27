@@ -6,8 +6,8 @@ public class HumanPlayer extends Player {
 
     private Scanner reader;
 
-    public HumanPlayer(int numPawns, Boolean isBlack) {
-        super(numPawns, isBlack);
+    public HumanPlayer(Boolean isBlack) {
+        super(isBlack);
         reader = new Scanner(System.in);
     }
     

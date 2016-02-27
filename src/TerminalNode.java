@@ -33,6 +33,15 @@ public class TerminalNode extends GameNode {
         return stateValue;
     }
     
+    /**
+     * The utility function attempts to create a score for a player from a certain layout of the board
+     * Here, we use number of pawns, because it is a good way to tell who is in the lead.
+     * The scale will go between 0 and 2n, where n represents the number of pawns on each team.
+     * If both sides have the same number of pawns, the score is n. 
+     * If the team this AI controls is winning, the score will be > n
+     * 
+     * @return the utiity value of the current game state
+     */
     public int findUtilityValue(){
         int numPawns = 0;
         int enemyPawns = 0;
@@ -47,9 +56,9 @@ public class TerminalNode extends GameNode {
             }
         }
 
-        int diff = numPawns - enemyPawns;
+        int diff = UtilityConstants.BOARD_SIZE + ( numPawns - enemyPawns );
         
-        return diff + this.rootState.boardSize;
+        return diff;
     }
 
 }
