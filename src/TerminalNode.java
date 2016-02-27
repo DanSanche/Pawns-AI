@@ -34,41 +34,22 @@ public class TerminalNode extends GameNode {
     }
     
     public int findUtilityValue(){
-        int maxLevel = 0;
         int numPawns = 0;
-        int enemyLevel = 0;
         int enemyPawns = 0;
         Iterator<Integer> it = this.rootState.pawnPositions.keySet().iterator();
         while(it.hasNext()){
             Integer pos = it.next();
             Pawn nextPawn = this.rootState.pawnPositions.get(pos);
             if(nextPawn.isBlackTeam() == isBlack){
-                numPawns = numPawns + 1;
-                int thisLevel = pos / this.rootState.boardSize;
-                //black pawns start at bottom and move to top. Invert this level
-                if(!nextPawn.isBlackTeam()){
-                    thisLevel = Math.abs(this.rootState.boardSize - (thisLevel+1));
-                }
-                if(thisLevel > maxLevel){
-                    maxLevel = thisLevel;
-                }
+               numPawns = numPawns + 1;
             } else {
-                enemyPawns = enemyPawns + 1;
-                int thisLevel = pos / this.rootState.boardSize;
-                //black pawns start at bottom and move to top. Invert this level
-                if(!nextPawn.isBlackTeam()){
-                    thisLevel = Math.abs(this.rootState.boardSize - (thisLevel+1));
-                }
-                enemyLevel = enemyLevel + thisLevel;
-                
+              enemyPawns = enemyPawns + 1;
             }
         }
-      //  this.rootState.renderState();
-      //  enemyPawns =  Math.abs(this.rootState.boardSize - (enemyPawns));
-        int finalValue = enemyLevel;
 
+        int diff = numPawns - enemyPawns;
         
-        return finalValue;
+        return diff + this.rootState.boardSize;
     }
 
 }

@@ -8,9 +8,8 @@ public class RobotPlayer extends Player {
     }
 
     public BoardState runTurn(BoardState currentState){
-        int maxValPossible = 100;
         MaxNode rootNode = new MaxNode(currentState, this.isBlackTeam(), this.depth, UtilityConstants.LOSS_VALUE-1, UtilityConstants.WIN_VALUE);
-     //   rootNode.print();
+       // rootNode.print();
         int finalValue = rootNode.nodeValue;
         System.out.println("Decison Value: " + finalValue);
         BoardState finalState = rootNode.finalState();
