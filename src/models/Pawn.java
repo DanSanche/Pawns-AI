@@ -1,4 +1,5 @@
-
+package models;
+import players.Player;
 
 public class Pawn {
     

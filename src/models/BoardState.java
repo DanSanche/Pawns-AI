@@ -1,4 +1,10 @@
+package models;
 import java.util.List;
+
+import constants.GameCompletion;
+import constants.UtilityConstants;
+import players.Player;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -8,7 +14,7 @@ import java.util.LinkedList;
 
 public class BoardState {
     
-    Hashtable<Integer, Pawn> pawnPositions;
+    public Hashtable<Integer, Pawn> pawnPositions;
     
     private GameCompletion cahcedState = null;
     private Integer chachedBlackUtilityValue = null;

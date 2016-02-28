@@ -1,7 +1,11 @@
+package gamenodes;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import constants.GameCompletion;
+import models.BoardState;
 
 public class MaxNode extends GameNode {
     

@@ -1,14 +1,18 @@
-import java.util.Collections;
+package gamenodes;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import constants.GameCompletion;
+import models.BoardState;
+import models.Pawn;
 
 public class GameNode {
     
     protected BoardState rootState;
     protected Boolean isBlack;
     protected List<GameNode> childStates;
-    protected int nodeValue;
+    public int nodeValue;
     protected String printPrefix = "";
 
     public GameNode(BoardState rootState, Boolean playerIsBlack, int depth, int alpha, int beta) {

@@ -1,3 +1,8 @@
+package players;
+import constants.UtilityConstants;
+import gamenodes.MaxNode;
+import models.BoardState;
+
 public class RobotPlayer extends Player {
     
     protected int depth;

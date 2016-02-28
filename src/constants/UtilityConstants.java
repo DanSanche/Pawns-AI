@@ -1,3 +1,4 @@
+package constants;
 
 public class UtilityConstants {
     public static final int BOARD_SIZE = 5;

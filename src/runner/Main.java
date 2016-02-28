@@ -1,4 +1,10 @@
+package runner;
 import java.util.Scanner;
+
+import models.BoardState;
+import players.HumanPlayer;
+import players.Player;
+import players.RobotPlayer;
 
 public class Main {
 

@@ -1,6 +1,10 @@
+package players;
 import java.util.Collection;
 import java.util.List;
 import java.util.Scanner;
+
+import models.BoardState;
+import models.Pawn;
 
 public class HumanPlayer extends Player {
 

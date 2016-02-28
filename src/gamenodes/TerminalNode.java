@@ -1,4 +1,9 @@
+package gamenodes;
 import java.util.LinkedList;
+
+import constants.GameCompletion;
+import constants.UtilityConstants;
+import models.BoardState;
 
 public class TerminalNode extends GameNode {
 
