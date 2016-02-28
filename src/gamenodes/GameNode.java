@@ -7,6 +7,12 @@ import constants.GameCompletion;
 import models.BoardState;
 import models.Pawn;
 
+/**
+ * A generic game node. There are subclasses for min, max, and terminal nodes, 
+ * that will be combined into a minimax tree
+ * @author Sanche
+ *
+ */
 public class GameNode {
     
     protected BoardState rootState;
@@ -15,28 +21,58 @@ public class GameNode {
     public int nodeValue;
     protected String printPrefix = "";
 
+    /**
+     * Creates a new generic game node object
+     * @param rootState - the state of the board rooted at this node
+     * @param playerIsBlack - whether the AI controlling this search is working for black or white
+     * @param depth - the depth to continue searching for
+     * @param alpha - the current alpha value
+     * @param beta - the current beta value
+     */
     public GameNode(BoardState rootState, Boolean playerIsBlack, int depth, int alpha, int beta) {
         this.rootState = rootState;
         this.isBlack = playerIsBlack;
         this.nodeValue = this.findBestOption(depth, alpha, beta);
     }
     
+    /**
+     * Returns the value of this node to the hero player
+     * @return
+     */
     public int getNodeValue(){
         return this.nodeValue;
     }
     
+    /**
+     * function to calculate the value of this node
+     * @param depth - the depth to search to
+     * @param alpha - the current alpha value
+     * @param beta - the current beta value
+     * @return - the value of this node
+     */
     protected int findBestOption(int depth, int alpha, int beta){
         return 0;
     }
     
+    /**
+     * @return a list of all possible states the enemy can move into from this state
+     */
     protected List<BoardState> findEnemySuccessorStates(){
         return findSuccessorStatesHelper(!this.isBlack);
     }
     
+    /**
+     * @return a list of all possible states the hero player can move into from this state
+     */
     protected List<BoardState> findSuccessorStates(){
         return findSuccessorStatesHelper(this.isBlack);
     }
     
+    /**
+     * A helper function to find the next states available to either player
+     * @param forBlackTeam - the player to search for successor states for
+     * @return - the next states available to the chosen player
+     */
     private List<BoardState>findSuccessorStatesHelper(Boolean forBlackTeam){
         List<BoardState> resultsList = new LinkedList<BoardState>();
         
@@ -61,10 +97,16 @@ public class GameNode {
         return resultsList;
     }
     
+    /**
+     * prints a representation of the minimax tree
+     */
     public void print() {
         print("", true);
     }
 
+    /**
+     * Helper function for printing the tree
+     */
     private void print(String prefix, boolean isTail) {
         System.out.println(prefix + (isTail ? "└── " : "├── ") + this.printPrefix + this.nodeValue + "(" + this.rootState.findUtilityValue(this.isBlack) + ")");
         for (int i = 0; i < this.childStates.size() - 1; i++) {
