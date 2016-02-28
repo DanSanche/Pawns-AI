@@ -382,11 +382,14 @@ public class BoardState {
         }
 
         int diff = GameConstants.BOARD_SIZE + ( numPawns - enemyPawns );
+        int enemyDiff = GameConstants.BOARD_SIZE + ( enemyPawns - numPawns );
         
         if(isBlack){
             this.chachedBlackUtilityValue = new Integer(diff);
+            this.chachedWhiteUtilityValue = new Integer(enemyDiff);
         } else {
             this.chachedWhiteUtilityValue = new Integer(diff);
+            this.chachedBlackUtilityValue = new Integer(enemyDiff);
         }
         
         return diff;
