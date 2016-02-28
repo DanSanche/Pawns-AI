@@ -2,7 +2,7 @@ package players;
 import java.util.LinkedList;
 import java.util.List;
 
-import constants.UtilityConstants;
+import constants.GameConstants;
 import models.BoardState;
 import models.Pawn;
 
@@ -20,7 +20,7 @@ public class Player {
     public Player(Boolean isBlack) {
         this.isBlackTeam = isBlack;
        pawnList = new LinkedList<Pawn>();
-       for (int i=0; i< UtilityConstants.BOARD_SIZE; i++){
+       for (int i=0; i< GameConstants.BOARD_SIZE; i++){
            Pawn thisPawn = new Pawn(this);
            pawnList.add(thisPawn);
        }

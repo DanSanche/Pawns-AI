@@ -10,11 +10,21 @@ public class HumanPlayer extends Player {
 
     private Scanner reader;
 
+    /**
+     * creates a new human player
+     * @param isBlack represents whether the player is controlling the black team
+     */
     public HumanPlayer(Boolean isBlack) {
         super(isBlack);
         reader = new Scanner(System.in);
     }
     
+    /**
+     * Runs a turn for the player
+     * Since it's a human player, this function will ask the player which pawn it wants to move
+     * @param currentState - the current state of the game
+     * @return an object representing the new game state
+     */
     public BoardState runTurn(BoardState currentState){ 
         Collection<Integer> pawnOptions = currentState.renderPawnOptions(this);
         System.out.println("Which pawn do you want to move?: ");

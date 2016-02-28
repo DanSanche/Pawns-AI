@@ -2,7 +2,7 @@ package models;
 import java.util.List;
 
 import constants.GameCompletion;
-import constants.UtilityConstants;
+import constants.GameConstants;
 import players.Player;
 
 import java.util.ArrayList;
@@ -37,15 +37,15 @@ public class BoardState {
         
         //set up pawns in initial positions
         List<Pawn> firstList = whiteTeam.getPawnList();
-        for(int i=0; i<UtilityConstants.BOARD_SIZE; i++){
+        for(int i=0; i<GameConstants.BOARD_SIZE; i++){
             Pawn thisPawn = firstList.get(i);
             pawnPositions.put(new Integer(i), thisPawn);
         }
         
         List<Pawn> secondList = blackTeam.getPawnList();
-        for(int i=0; i<UtilityConstants.BOARD_SIZE; i++){
+        for(int i=0; i<GameConstants.BOARD_SIZE; i++){
             Pawn thisPawn = secondList.get(i);
-            int pawnPos = (UtilityConstants.BOARD_SIZE * (UtilityConstants.BOARD_SIZE-1)) + i;
+            int pawnPos = (GameConstants.BOARD_SIZE * (GameConstants.BOARD_SIZE-1)) + i;
             pawnPositions.put(new Integer(pawnPos), thisPawn);
         }
     }
@@ -83,7 +83,7 @@ public class BoardState {
         Collection<Integer> validOptions = new LinkedList<Integer>();
         
         //initialize all spaces to empty
-        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        int numSquares = GameConstants.BOARD_SIZE * GameConstants.BOARD_SIZE;
         ArrayList<String> tileStrings = new ArrayList<String>(numSquares);
         for(int i=0; i<numSquares; i++){
             tileStrings.add(i, ".");
@@ -106,7 +106,7 @@ public class BoardState {
         }
         
         for(int i=0; i<tileStrings.size(); i++){
-            if(i%(UtilityConstants.BOARD_SIZE) == 0 && i!=0){
+            if(i%(GameConstants.BOARD_SIZE) == 0 && i!=0){
                 boardString = boardString + "\n";
             }
             String tileValue = tileStrings.get(i);
@@ -154,12 +154,12 @@ public class BoardState {
         //test one space in front
         int forwardValue;
         if(selectedPawn.isBlackTeam()){
-            forwardValue = pawnPos - UtilityConstants.BOARD_SIZE;
+            forwardValue = pawnPos - GameConstants.BOARD_SIZE;
         } else {
-            forwardValue = pawnPos + UtilityConstants.BOARD_SIZE;
+            forwardValue = pawnPos + GameConstants.BOARD_SIZE;
         }
         //test if it's off the board, or if there's another pawn in the space
-        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        int numSquares = GameConstants.BOARD_SIZE * GameConstants.BOARD_SIZE;
         if(forwardValue >= 0 && forwardValue < numSquares && !this.pawnPositions.containsKey(new Integer(forwardValue))){
             validOptions.add(new Integer(forwardValue));
         }
@@ -169,7 +169,7 @@ public class BoardState {
         //test if the attack is on the right edge, or if there is no pawn to attack
         Pawn target = this.pawnPositions.get(new Integer(leftAttackValue));
         if(target != null && !target.isOnTeam(selectedPawn) &&
-        leftAttackValue % (UtilityConstants.BOARD_SIZE) != (UtilityConstants.BOARD_SIZE-1)){
+        leftAttackValue % (GameConstants.BOARD_SIZE) != (GameConstants.BOARD_SIZE-1)){
             validOptions.add(new Integer(leftAttackValue));
         }
         
@@ -177,7 +177,7 @@ public class BoardState {
        int rightAttackValue = forwardValue +1;
      //test if the attack is on the left edge, or if there is no pawn to attack
        target = this.pawnPositions.get(new Integer(rightAttackValue));
-       if(target != null && !target.isOnTeam(selectedPawn) && rightAttackValue % (UtilityConstants.BOARD_SIZE) != (0)){
+       if(target != null && !target.isOnTeam(selectedPawn) && rightAttackValue % (GameConstants.BOARD_SIZE) != (0)){
            validOptions.add(new Integer(rightAttackValue));    
        }
        
@@ -195,7 +195,7 @@ public class BoardState {
         List<Integer> validOptions = this.nextOptionsForPawn(selectedPawn);
         
         //initialize all spaces to empty
-        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        int numSquares = GameConstants.BOARD_SIZE * GameConstants.BOARD_SIZE;
         ArrayList<String> tileStrings = new ArrayList<String>(numSquares);
         for(int i=0; i<numSquares; i++){
             tileStrings.add(i, ".");
@@ -220,7 +220,7 @@ public class BoardState {
         
         //render as string
         for(int i=0; i<tileStrings.size(); i++){
-            if(i%(UtilityConstants.BOARD_SIZE) == 0 && i!=0){
+            if(i%(GameConstants.BOARD_SIZE) == 0 && i!=0){
                 boardString = boardString + "\n";
             }
             String tileValue = tileStrings.get(i);
@@ -236,7 +236,7 @@ public class BoardState {
     public void renderState(){
         String boardString = "";
         //initialize all spaces to empty
-        int numSquares = UtilityConstants.BOARD_SIZE * UtilityConstants.BOARD_SIZE;
+        int numSquares = GameConstants.BOARD_SIZE * GameConstants.BOARD_SIZE;
         ArrayList<String> tileStrings = new ArrayList<String>(numSquares);
         for(int i=0; i<numSquares; i++){
             tileStrings.add(i, ".");
@@ -251,7 +251,7 @@ public class BoardState {
         }
         //render as string
         for(int i=0; i<tileStrings.size(); i++){
-            if(i%(UtilityConstants.BOARD_SIZE) == 0 && i!=0){
+            if(i%(GameConstants.BOARD_SIZE) == 0 && i!=0){
                 boardString = boardString + "\n";
             }
             String tileValue = tileStrings.get(i);
@@ -313,10 +313,10 @@ public class BoardState {
                     whiteCanMove = (this.nextOptionsForPawn(thisPawn).size() > 0);
                 }
             }
-            if(thisPawn.isBlackTeam() && pos.intValue() < UtilityConstants.BOARD_SIZE){
+            if(thisPawn.isBlackTeam() && pos.intValue() < GameConstants.BOARD_SIZE){
                 //black has reached the end. Black won
                 return GameCompletion.Black_Reached_End;
-            } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (UtilityConstants.BOARD_SIZE*(UtilityConstants.BOARD_SIZE-1))){
+            } else if(!thisPawn.isBlackTeam() && pos.intValue() >= (GameConstants.BOARD_SIZE*(GameConstants.BOARD_SIZE-1))){
                 //white has reached the end. White won
                 return GameCompletion.White_Reached_End;
             }
@@ -381,7 +381,7 @@ public class BoardState {
             }
         }
 
-        int diff = UtilityConstants.BOARD_SIZE + ( numPawns - enemyPawns );
+        int diff = GameConstants.BOARD_SIZE + ( numPawns - enemyPawns );
         
         if(isBlack){
             this.chachedBlackUtilityValue = new Integer(diff);
