@@ -32,11 +32,11 @@ public class MaxNode extends GameNode {
             while(it.hasNext() && alpha<beta){
                 BoardState nextState = it.next();
                 MinNode nextNode = new MinNode(nextState, this.isBlack, depth-1, alpha, beta);
-                this.childStates.add(nextNode);
                 int nextCost = nextNode.nodeValue;
                 if(nextCost > alpha){
                     alpha = nextCost;
                     bestState = nextState;
+                    this.childStates.add(nextNode);
                 }
             }
             result = alpha;

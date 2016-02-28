@@ -31,9 +31,9 @@ public class MinNode extends GameNode {
                     //more levels. Make another max node
                     nextNode = new MaxNode(nextState, this.isBlack, depth, alpha, beta);
                 }
-                this.childStates.add(nextNode);
                 nextCost = nextNode.nodeValue;
                 if(nextCost < beta){
+                    this.childStates.add(nextNode);
                     beta = nextCost;
                 }
             }
