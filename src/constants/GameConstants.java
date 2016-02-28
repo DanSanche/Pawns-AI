@@ -6,5 +6,5 @@ package constants;
  *
  */
 public class GameConstants {
-    public static final int BOARD_SIZE = 5;
+    public static final int BOARD_SIZE = 6;
 }
