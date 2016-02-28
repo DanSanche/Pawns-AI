@@ -24,7 +24,7 @@ public class MaxNode extends GameNode {
             Iterator<BoardState> it = successorOptions.iterator();
             while(it.hasNext() && alpha<beta){
                 BoardState nextState = it.next();
-                MinNode nextNode = new MinNode(nextState, !this.isBlack, depth-1, alpha, beta);
+                MinNode nextNode = new MinNode(nextState, this.isBlack, depth-1, alpha, beta);
                 this.childStates.add(nextNode);
                 int nextCost = nextNode.nodeValue;
                 if(nextCost > alpha){
@@ -38,7 +38,7 @@ public class MaxNode extends GameNode {
             GameCompletion state = this.rootState.gameCompletionState();
             if(state == GameCompletion.Game_Ongoing){
                 //we are stuck, but our opponent isn't. The game isn't over. Let them make a move
-                nextNode = new MinNode(this.rootState, !this.isBlack, depth-1, alpha, beta);
+                nextNode = new MinNode(this.rootState, this.isBlack, depth-1, alpha, beta);
             } else {
                 //the game is complete. Create a terminal node to calculate our costs
                 nextNode = new TerminalNode(this.rootState, this.isBlack, depth-1, alpha, beta);

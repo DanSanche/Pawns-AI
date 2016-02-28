@@ -25,14 +25,22 @@ public class GameNode {
         return 0;
     }
     
+    protected List<BoardState> findEnemySuccessorStates(){
+        return findSuccessorStatesHelper(!this.isBlack);
+    }
+    
     protected List<BoardState> findSuccessorStates(){
+        return findSuccessorStatesHelper(this.isBlack);
+    }
+    
+    private List<BoardState>findSuccessorStatesHelper(Boolean forBlackTeam){
         List<BoardState> resultsList = new LinkedList<BoardState>();
         
         if(this.rootState.gameCompletionState() != GameCompletion.Game_Ongoing){
             return resultsList;
         }
         
-        List<Integer> positionList = this.rootState.pawnPositionsForPlayer(this.isBlack);
+        List<Integer> positionList = this.rootState.pawnPositionsForPlayer(forBlackTeam);
         Iterator<Integer> it = positionList.iterator();
         while(it.hasNext()){
             Integer position = it.next();
