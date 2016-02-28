@@ -17,7 +17,7 @@ public class Main {
     public static void main(String [] args){
         Boolean printTree = false;
         int turns = 0;
-        int depth = 13;
+        int depth = 8;
         reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;

@@ -73,6 +73,22 @@ public class BoardState {
     }
     
     /**
+     * Constructs a new game state by moving a pawn in an old game state
+     * Takes in the old position as a parameter for efficiency
+     * @param prevState - the previous state of the game
+     * @param movedPawn - the pawn to move
+     * @param oldPosition - the previous position of the pawn
+     * @param newPosition - the new position of the pawn
+     */
+    public BoardState(BoardState prevState, Pawn movedPawn, Integer oldPosition, Integer newPosition){
+        this.pawnPositions = new Hashtable<Integer, Pawn>(prevState.pawnPositions);
+        
+        this.pawnPositions.remove(oldPosition);
+        //add back in moved pawn
+        this.pawnPositions.put(newPosition, movedPawn);
+    }
+    
+    /**
      * Creates a visual representation of the pawns available to move
      * used to allow human players to select the next pawn to move
      * @param selectedPlayer - the player that gets to select a new movement

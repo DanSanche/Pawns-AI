@@ -90,7 +90,7 @@ public class GameNode {
             Iterator<Integer> optionsIt = optionsList.iterator();
             while(optionsIt.hasNext()){
                 Integer thisOption = optionsIt.next();
-                BoardState newState = new BoardState(this.rootState, nextPawn, thisOption);
+                BoardState newState = new BoardState(this.rootState, nextPawn, position.intValue(), thisOption);
                 resultsList.add(newState);
             }
         }
