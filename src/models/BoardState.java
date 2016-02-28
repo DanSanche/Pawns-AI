@@ -353,24 +353,6 @@ public class BoardState {
     }
     
     /**
-     * returns a list representing the positions of each pawn for a given player
-     * @param playerIsBlack - whether we are looking for black pawns or white pawns
-     * @return a list of the pawn positions
-     */
-    public List<Integer> pawnPositionsForPlayer(Boolean playerIsBlack){
-        List<Integer> resultsList = new LinkedList<Integer>();
-        Iterator<Integer> it = this.pawnPositions.keySet().iterator();
-        while(it.hasNext()){
-            Integer pos = it.next();
-            Pawn thisPawn = this.pawnPositions.get(pos);
-            if(thisPawn.isBlackTeam() == playerIsBlack){
-                resultsList.add(pos);
-            }
-        }
-        return resultsList;
-    }
-    
-    /**
      * The utility function attempts to create a score for a player from a certain layout of the board
      * Here, we use number of pawns, because it is a good way to tell who is in the lead.
      * The scale will go between 0 and 2n, where n represents the number of pawns on each team.

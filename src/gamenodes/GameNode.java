@@ -80,18 +80,19 @@ public class GameNode {
             return resultsList;
         }
         
-        List<Integer> positionList = this.rootState.pawnPositionsForPlayer(forBlackTeam);
-        Iterator<Integer> it = positionList.iterator();
+        Iterator<Integer> it = this.rootState.pawnPositions.keySet().iterator();
         while(it.hasNext()){
             Integer position = it.next();
             Pawn nextPawn = this.rootState.pawnPositions.get(position);
 
-            List<Integer> optionsList = this.rootState.nextOptionsForPawn(nextPawn, position.intValue());
-            Iterator<Integer> optionsIt = optionsList.iterator();
-            while(optionsIt.hasNext()){
-                Integer thisOption = optionsIt.next();
-                BoardState newState = new BoardState(this.rootState, nextPawn, position.intValue(), thisOption);
-                resultsList.add(newState);
+            if(nextPawn.isBlackTeam() == forBlackTeam){
+                List<Integer> optionsList = this.rootState.nextOptionsForPawn(nextPawn, position.intValue());
+                Iterator<Integer> optionsIt = optionsList.iterator();
+                while(optionsIt.hasNext()){
+                    Integer thisOption = optionsIt.next();
+                    BoardState newState = new BoardState(this.rootState, nextPawn, position.intValue(), thisOption);
+                    resultsList.add(newState);
+                }
             }
         }
         return resultsList;
