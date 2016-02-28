@@ -12,6 +12,12 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+/**
+ * Represents a state of the game board
+ * Can be return utility values for either team
+ * @author Sanche
+ *
+ */
 public class BoardState {
     
     public Hashtable<Integer, Pawn> pawnPositions;
@@ -20,18 +26,23 @@ public class BoardState {
     private Integer chachedBlackUtilityValue = null;
     private Integer chachedWhiteUtilityValue = null;
 
-    public BoardState(Player firstTeam, Player secondTeam) {
+    /**
+     * constructs an initial game state
+     * @param whiteTeam - the white player object
+     * @param blackTeam - the black player object
+     */
+    public BoardState(Player whiteTeam, Player blackTeam) {
         //create board spaces
         this.pawnPositions = new Hashtable<Integer, Pawn>();
         
         //set up pawns in initial positions
-        List<Pawn> firstList = firstTeam.getPawnList();
+        List<Pawn> firstList = whiteTeam.getPawnList();
         for(int i=0; i<UtilityConstants.BOARD_SIZE; i++){
             Pawn thisPawn = firstList.get(i);
             pawnPositions.put(new Integer(i), thisPawn);
         }
         
-        List<Pawn> secondList = secondTeam.getPawnList();
+        List<Pawn> secondList = blackTeam.getPawnList();
         for(int i=0; i<UtilityConstants.BOARD_SIZE; i++){
             Pawn thisPawn = secondList.get(i);
             int pawnPos = (UtilityConstants.BOARD_SIZE * (UtilityConstants.BOARD_SIZE-1)) + i;
@@ -39,6 +50,12 @@ public class BoardState {
         }
     }
     
+    /**
+     * Constructs a new game state by moving a pawn in an old game state
+     * @param prevState - the previous state of the game
+     * @param movedPawn - the pawn to move
+     * @param newPosition - the new position of the pawn
+     */
     public BoardState(BoardState prevState, Pawn movedPawn, Integer newPosition){
         this.pawnPositions = new Hashtable<Integer, Pawn>();
         
@@ -55,6 +72,12 @@ public class BoardState {
         this.pawnPositions.put(newPosition, movedPawn);
     }
     
+    /**
+     * Creates a visual representation of the pawns available to move
+     * used to allow human players to select the next pawn to move
+     * @param selectedPlayer - the player that gets to select a new movement
+     * @return - a list representing of the indices of the pawns that are avaliable in the current state
+     */
     public Collection<Integer> renderPawnOptions(Player selectedPlayer){
         String boardString = "";
         Collection<Integer> validOptions = new LinkedList<Integer>();
@@ -93,8 +116,13 @@ public class BoardState {
         return validOptions;
     }  
     
-    //returns a list of options for moves for the pawn,
-    //or throws an exception if it's not on the board
+    /**
+     * Finds all possible movements for a given pawn
+     * Used when pawn position is unknown. There is a more efficient method if position is known
+     * @param selectedPawn - the pawn that is going to move
+     * @return - a list of possible positions the pawn can end up in
+     * @throws RuntimeException - thrown if the pawn doesn't exist in the current board state
+     */
     public List<Integer> nextOptionsForPawn(Pawn selectedPawn) throws RuntimeException{
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         int pos = -1;
@@ -112,7 +140,14 @@ public class BoardState {
         }
     }
     
-    //another version of the function if you know the pawns position. More efficient
+    /**
+     * Finds all possible movements for a given pawn
+     * More efficient than previous method because the position is already known
+     * @param selectedPawn - the pawn that is going to move
+     * @param pawnPos - the current position of the selected pawn
+     * @return - a list of possible positions the pawn can end up in
+     * @throws RuntimeException - thrown if the pawn doesn't exist in the current board state
+     */
     public List<Integer> nextOptionsForPawn(Pawn selectedPawn, int pawnPos){
         List<Integer> validOptions = new LinkedList<Integer>();
         
@@ -149,6 +184,12 @@ public class BoardState {
         return validOptions;
     }
     
+    /**
+     * Creates a visual representation of the moves available to a specific pawn
+     * used to allow human players to select the next movement to make
+     * @param selectedPawn - the pawn that is going to move
+     * @return - a list of possible positions the pawn can end up in
+     */
     public List<Integer> renderMoveOptions(Player selectedPlayer, Pawn selectedPawn){
         String boardString = "";
         List<Integer> validOptions = this.nextOptionsForPawn(selectedPawn);
@@ -189,6 +230,9 @@ public class BoardState {
         return validOptions;
     }
     
+    /**
+     * Renders the current state of the board in the console
+     */
     public void renderState(){
         String boardString = "";
         //initialize all spaces to empty
@@ -216,6 +260,11 @@ public class BoardState {
         System.out.println(boardString);
     }
     
+    /**
+     * returns a bool representing whether the player can make a movement
+     * @param selectedPlayer - the player to test for
+     * @return - true of the player has at least one possible movement, false if they are stuck
+     */
     public Boolean playerCanMove(Player selectedPlayer){
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         Boolean hasMovesLeft = false;
@@ -230,7 +279,11 @@ public class BoardState {
         return (gameCompletionState() == GameCompletion.Game_Ongoing && hasMovesLeft);
     }
 
-    
+    /**
+     * returns the current state of the board.
+     *  Possible values include either player winning, a stalemate reached, or the game being ongoing
+     * @return - an enum representing the game's state
+     */
     public GameCompletion gameCompletionState(){
         
         if(this.cahcedState != null){
@@ -281,6 +334,11 @@ public class BoardState {
         }
     }
     
+    /**
+     * returns a list representing the positions of each pawn for a given player
+     * @param playerIsBlack - whether we are looking for black pawns or white pawns
+     * @return a list of the pawn positions
+     */
     public List<Integer> pawnPositionsForPlayer(Boolean playerIsBlack){
         List<Integer> resultsList = new LinkedList<Integer>();
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
@@ -336,6 +394,10 @@ public class BoardState {
 
     public static class Comparators {
 
+        /**
+         * used to compare game states to see which one is better for a particular player
+         * This one will return 1 if the state is better for black than the given state, or -1 if it is worse
+         */
         public static Comparator<BoardState> BLACK_ASCENDING = new Comparator<BoardState>() {
             @Override
             public int compare(BoardState o1, BoardState o2) {
@@ -351,6 +413,10 @@ public class BoardState {
             }
         };
         
+        /**
+         * used to compare game states to see which one is better for a particular player
+         * This one will return 1 if the state is worse for black than the given state, or -1 if it is better
+         */
         public static Comparator<BoardState> BLACK_DESCENDING = new Comparator<BoardState>() {
             @Override
             public int compare(BoardState o1, BoardState o2) {
@@ -366,6 +432,10 @@ public class BoardState {
             }
         };
         
+        /**
+         * used to compare game states to see which one is better for a particular player
+         * This one will return 1 if the state is better for white than the given state, or -1 if it is worse
+         */
         public static Comparator<BoardState> WHITE_ASCENDING = new Comparator<BoardState>() {
             @Override
             public int compare(BoardState o1, BoardState o2) {
@@ -381,6 +451,10 @@ public class BoardState {
             }
         };
         
+        /**
+         * used to compare game states to see which one is better for a particular player
+         * This one will return 1 if the state is worse for white than the given state, or -1 if it is better
+         */
         public static Comparator<BoardState> WHITE_DESCENDING = new Comparator<BoardState>() {
             @Override
             public int compare(BoardState o1, BoardState o2) {
