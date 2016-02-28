@@ -125,6 +125,7 @@ public class BoardState {
      */
     public List<Integer> nextOptionsForPawn(Pawn selectedPawn) throws RuntimeException{
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
+        //find the pawn's position
         int pos = -1;
         while(pos == -1 && it.hasNext()){
             Integer thisPos = it.next();
@@ -134,6 +135,7 @@ public class BoardState {
             }
         }
         if(pos != -1){
+            //call helper function to find the options for the pawn at the new known position
             return nextOptionsForPawn(selectedPawn, pos);
         } else {
             throw new RuntimeException("Pawn not on board");
@@ -268,7 +270,7 @@ public class BoardState {
     public Boolean playerCanMove(Player selectedPlayer){
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         Boolean hasMovesLeft = false;
-        
+        //check all pawns to see if there is at least one that can move
         while(it.hasNext()){
             Integer pos = it.next();
             Pawn thisPawn = this.pawnPositions.get(pos);

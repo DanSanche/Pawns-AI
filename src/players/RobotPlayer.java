@@ -31,7 +31,15 @@ public class RobotPlayer extends Player {
         if(this.printTree){
             rootNode.print();
         }
-        int finalValue = rootNode.nodeValue;
+        String finalValue = "" + rootNode.nodeValue;
+        if(rootNode.nodeValue == UtilityConstants.WIN_VALUE){
+            finalValue = "Win Guaranteed";
+        } else if(rootNode.nodeValue == UtilityConstants.LOSS_VALUE){
+            finalValue = "Loss Expected";
+        } else if(rootNode.nodeValue == UtilityConstants.STALEMATE_VALUE){
+            finalValue = "Stalemate Expected";
+        }
+        
         System.out.println("Decison Value: " + finalValue);
         BoardState finalState = rootNode.finalState();
         finalState.renderState();

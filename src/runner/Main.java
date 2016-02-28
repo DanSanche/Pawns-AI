@@ -64,7 +64,6 @@ public class Main {
         }
         //print out winner information
         System.out.println("\n\n\n----------------");
-        currentState.renderState();
         switch(currentState.gameCompletionState()){
             case White_More_Pawns:
             case White_Reached_End:
