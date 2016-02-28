@@ -5,8 +5,9 @@ public class Main {
     private static Scanner reader;
 
     public static void main(String [] args){
+        Boolean printTree = false;
         int turns = 0;
-        int depth = 10;
+        int depth = 13;
         reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;
@@ -20,7 +21,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             whitePlayer = new HumanPlayer(false);
         } else {
-            whitePlayer = new RobotPlayer(false, depth);
+            whitePlayer = new RobotPlayer(false, depth, printTree);
         }
         
         do {
@@ -30,7 +31,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             blackPlayer = new HumanPlayer(true);
         } else {
-            blackPlayer = new RobotPlayer(true, depth);
+            blackPlayer = new RobotPlayer(true, depth, printTree);
         }
         
         BoardState currentState = new BoardState(whitePlayer, blackPlayer);
