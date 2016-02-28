@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,6 +13,11 @@ public class MinNode extends GameNode {
     protected int findBestOption(int depth,  int alpha, int beta){
         this.childStates = new LinkedList<GameNode>();
         List<BoardState> successorOptions = this.findEnemySuccessorStates();
+        if(this.isBlack){
+            Collections.sort(successorOptions, BoardState.Comparators.BLACK_ASCENDING);
+        } else {
+            Collections.sort(successorOptions, BoardState.Comparators.WHITE_ASCENDING);
+        }
         if(!successorOptions.isEmpty()){
             Iterator<BoardState> it = successorOptions.iterator();
             while(it.hasNext() && alpha < beta){

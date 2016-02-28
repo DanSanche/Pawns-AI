@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,12 @@ public class MaxNode extends GameNode {
         this.childStates = new LinkedList<GameNode>();
         int result;
         List<BoardState> successorOptions = this.findSuccessorStates();
+        if(this.isBlack){
+            Collections.sort(successorOptions, BoardState.Comparators.BLACK_DESCENDING);
+        } else {
+            Collections.sort(successorOptions, BoardState.Comparators.WHITE_DESCENDING);
+        }
+        
         if(!successorOptions.isEmpty()){
             //we have options. Find the max of them
             Iterator<BoardState> it = successorOptions.iterator();

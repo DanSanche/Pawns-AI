@@ -1,18 +1,18 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class BoardState implements Comparable<BoardState> {
+public class BoardState {
     
     Hashtable<Integer, Pawn> pawnPositions;
     
     private GameCompletion cahcedState = null;
     private Integer chachedBlackUtilityValue = null;
     private Integer chachedWhiteUtilityValue = null;
-    private Boolean compareUsingBlack = true;
 
     public BoardState(Player firstTeam, Player secondTeam) {
         //create board spaces
@@ -327,22 +327,69 @@ public class BoardState implements Comparable<BoardState> {
         
         return diff;
     }
-    
-    public void setComparisonPlayer(Boolean isBlack){
-        this.compareUsingBlack = isBlack;
-    }
 
-    @Override
-    public int compareTo(BoardState o) {
-        int thisVal = this.findUtilityValue(compareUsingBlack);
-        int otherVal = o.findUtilityValue(compareUsingBlack);
-        if(thisVal < otherVal){
-            return 1;
-        } else if(thisVal == otherVal){
-            return 0;
-        } else {
-            return -1;
-        }
+    public static class Comparators {
+
+        public static Comparator<BoardState> BLACK_ASCENDING = new Comparator<BoardState>() {
+            @Override
+            public int compare(BoardState o1, BoardState o2) {
+                int thisVal = o1.findUtilityValue(true);
+                int otherVal = o2.findUtilityValue(true);
+                if(thisVal > otherVal){
+                    return 1;
+                } else if(thisVal == otherVal){
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        };
+        
+        public static Comparator<BoardState> BLACK_DESCENDING = new Comparator<BoardState>() {
+            @Override
+            public int compare(BoardState o1, BoardState o2) {
+                int thisVal = o1.findUtilityValue(true);
+                int otherVal = o2.findUtilityValue(true);
+                if(thisVal < otherVal){
+                    return 1;
+                } else if(thisVal == otherVal){
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        };
+        
+        public static Comparator<BoardState> WHITE_ASCENDING = new Comparator<BoardState>() {
+            @Override
+            public int compare(BoardState o1, BoardState o2) {
+                int thisVal = o1.findUtilityValue(false);
+                int otherVal = o2.findUtilityValue(false);
+                if(thisVal > otherVal){
+                    return 1;
+                } else if(thisVal == otherVal){
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        };
+        
+        public static Comparator<BoardState> WHITE_DESCENDING = new Comparator<BoardState>() {
+            @Override
+            public int compare(BoardState o1, BoardState o2) {
+                int thisVal = o1.findUtilityValue(false);
+                int otherVal = o2.findUtilityValue(false);
+                if(thisVal < otherVal){
+                    return 1;
+                } else if(thisVal == otherVal){
+                    return 0;
+                } else {
+                    return -1;
+                }
+            }
+        };
+        
     }
     
 }

@@ -51,11 +51,9 @@ public class GameNode {
             while(optionsIt.hasNext()){
                 Integer thisOption = optionsIt.next();
                 BoardState newState = new BoardState(this.rootState, nextPawn, thisOption);
-                newState.setComparisonPlayer(this.isBlack);
                 resultsList.add(newState);
             }
         }
-        Collections.sort(resultsList);
         return resultsList;
     }
     
@@ -64,7 +62,7 @@ public class GameNode {
     }
 
     private void print(String prefix, boolean isTail) {
-        System.out.println(prefix + (isTail ? "└── " : "├── ") + this.printPrefix + this.nodeValue);
+        System.out.println(prefix + (isTail ? "└── " : "├── ") + this.printPrefix + this.nodeValue + "(" + this.rootState.findUtilityValue(this.isBlack) + ")");
         for (int i = 0; i < this.childStates.size() - 1; i++) {
             this.childStates.get(i).print(prefix + (isTail ? "    " : "│   "), false);
         }
