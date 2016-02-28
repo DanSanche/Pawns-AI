@@ -1,3 +1,4 @@
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,10 +43,11 @@ public class GameNode {
             while(optionsIt.hasNext()){
                 Integer thisOption = optionsIt.next();
                 BoardState newState = new BoardState(this.rootState, nextPawn, thisOption);
-                int stateValue = newState.findUtilityValue(isBlack);
+                newState.setComparisonPlayer(this.isBlack);
                 resultsList.add(newState);
             }
         }
+        Collections.sort(resultsList);
         return resultsList;
     }
     

@@ -5,13 +5,14 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class BoardState {
+public class BoardState implements Comparable<BoardState> {
     
     Hashtable<Integer, Pawn> pawnPositions;
     
     private GameCompletion cahcedState = null;
     private Integer chachedBlackUtilityValue = null;
     private Integer chachedWhiteUtilityValue = null;
+    private Boolean compareUsingBlack = true;
 
     public BoardState(Player firstTeam, Player secondTeam) {
         //create board spaces
@@ -325,6 +326,23 @@ public class BoardState {
         }
         
         return diff;
+    }
+    
+    public void setComparisonPlayer(Boolean isBlack){
+        this.compareUsingBlack = isBlack;
+    }
+
+    @Override
+    public int compareTo(BoardState o) {
+        int thisVal = this.findUtilityValue(compareUsingBlack);
+        int otherVal = o.findUtilityValue(compareUsingBlack);
+        if(thisVal < otherVal){
+            return 1;
+        } else if(thisVal == otherVal){
+            return 0;
+        } else {
+            return -1;
+        }
     }
     
 }
