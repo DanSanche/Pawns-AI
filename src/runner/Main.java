@@ -10,6 +10,10 @@ public class Main {
 
     private static Scanner reader;
 
+    /**
+     * Main function sets up the program, and runs the game
+     * Gives each player a turn until a termination state is reached
+     */
     public static void main(String [] args){
         Boolean printTree = false;
         int turns = 0;
