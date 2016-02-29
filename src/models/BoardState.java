@@ -7,6 +7,7 @@ import players.Player;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.Iterator;
@@ -354,11 +355,16 @@ public class BoardState {
     
     /**
      * The utility function attempts to create a score for a player from a certain layout of the board
-     * Here, we use number of pawns, because it is a good way to tell who is in the lead.
-     * The scale will go between 0 and 2n, where n represents the number of pawns on each team.
-     * If both sides have the same number of pawns, the score is n. 
-     * If the team this AI controls is winning, the score will be > n
-     * 
+     * The utility value is made up of two parts: 
+     *    1) in the thousands digit,  we use number of pawns, because it is a good way to tell who is in the lead.
+     *       The scale will go between 0 and 2n, where n represents the number of pawns on each team.
+     *       If both sides have the same number of pawns, the score is n. 
+     *       If the team this AI controls is winning, the score will be > n
+     *    2) in the lower three digits, we add a number reperesenting the number of pawns that are being
+     *       defended by team mates. Defended pawns have a teammate diagonally behind them, poised to attack
+     *       if the pawn is captured. This will encourage the game to find strong defencive positions, all other things being equal
+     * Because the number of pawns is a significant digit, the AI will prefer states defensive it has more pawns, but it will also
+     * take good pawn positioning into account
      * @return the utility value of the current game state
      */
     public int findUtilityValue(Boolean isBlack){
@@ -368,31 +374,53 @@ public class BoardState {
             return this.chachedWhiteUtilityValue.intValue();
         }
         
+        List<Integer> positionsList = new ArrayList<Integer>();
+        
+        int numDefending = 0;
+        int numEnemies = 0;
         int numPawns = 0;
-        int enemyPawns = 0;
         Iterator<Integer> it = this.pawnPositions.keySet().iterator();
         while(it.hasNext()){
             Integer pos = it.next();
             Pawn nextPawn = this.pawnPositions.get(pos);
             if(nextPawn.isBlackTeam() == isBlack){
-               numPawns = numPawns + 1;
+                positionsList.add(pos);
+                numPawns++;
             } else {
-              enemyPawns = enemyPawns + 1;
+                numEnemies++;
             }
         }
-
-        int diff = GameConstants.BOARD_SIZE + ( numPawns - enemyPawns );
-        int enemyDiff = GameConstants.BOARD_SIZE + ( enemyPawns - numPawns );
         
-        if(isBlack){
-            this.chachedBlackUtilityValue = new Integer(diff);
-            this.chachedWhiteUtilityValue = new Integer(enemyDiff);
-        } else {
-            this.chachedWhiteUtilityValue = new Integer(diff);
-            this.chachedBlackUtilityValue = new Integer(enemyDiff);
+        Collections.sort(positionsList);
+        
+        Iterator<Integer> posIt = positionsList.iterator();
+        while(posIt.hasNext()){
+            Integer nextPos = posIt.next();
+            
+            Integer backwardValue;
+            if(isBlack){
+                backwardValue = nextPos + GameConstants.BOARD_SIZE;
+            } else {
+                backwardValue = nextPos - GameConstants.BOARD_SIZE;
+            }
+            
+            if(Collections.binarySearch(positionsList,backwardValue+1)>=0 && nextPos.intValue() % GameConstants.BOARD_SIZE != GameConstants.BOARD_SIZE-1){
+                numDefending = numDefending + 1;
+            } else  if(Collections.binarySearch(positionsList,backwardValue-1)>=0 && nextPos.intValue() % GameConstants.BOARD_SIZE != 0){
+                numDefending = numDefending + 1;
+            }
         }
         
-        return diff;
+        int pawnValue = 1000 * (GameConstants.BOARD_SIZE + numPawns - numEnemies);
+        int utility = numDefending + pawnValue;
+        
+        if(isBlack){
+            this.chachedBlackUtilityValue = new Integer(utility);
+        } else {
+            this.chachedWhiteUtilityValue = new Integer(utility);
+        }
+        
+        return utility;
     }
 
     public static class Comparators {
