@@ -42,6 +42,7 @@ public class RobotPlayer extends Player {
         
         System.out.println("Decison Value: " + finalValue);
         BoardState finalState = rootNode.finalState();
+        System.out.println("Current Value: " + finalState.findUtilityValue(this.isBlackTeam()));
         finalState.renderState();
         return finalState;
     }

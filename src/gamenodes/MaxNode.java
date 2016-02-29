@@ -76,7 +76,7 @@ public class MaxNode extends GameNode {
             result = alpha;
         } else {
             //there are no more options. Now we need to find if the game is complete,
-            //or if we are just stuck but our oppinent can move
+            //or if we are just stuck but our opponent can move
             GameNode nextNode;
             GameCompletion state = this.rootState.gameCompletionState();
             if(state == GameCompletion.Game_Ongoing){
