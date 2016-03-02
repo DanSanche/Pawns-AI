@@ -30,7 +30,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             whitePlayer = new HumanPlayer(false);
         } else {
-            System.out.println("What is the AI's max depth? (1-6 recommended)");
+            System.out.println("What is the white's max depth? (1-6 recommended)");
             int depth = reader.nextInt();
             whitePlayer = new RobotPlayer(false, depth, printTree);
         }
@@ -42,7 +42,7 @@ public class Main {
         if(inputString.equals("yes") || inputString.equals("y") || inputString.equals("Y")){
             blackPlayer = new HumanPlayer(true);
         } else {
-            System.out.println("What is the AI's max depth? (1-6 recommended)");
+            System.out.println("What is the black's max depth? (1-6 recommended)");
             int depth = reader.nextInt();
             blackPlayer = new RobotPlayer(true, depth, printTree);
         }
