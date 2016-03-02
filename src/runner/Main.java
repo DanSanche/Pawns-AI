@@ -15,9 +15,10 @@ public class Main {
      * Gives each player a turn until a termination state is reached
      */
     public static void main(String [] args){
+        long startTime = new java.util.Date().getTime();
         Boolean printTree = false;
         int turns = 0;
-        int depth = 6;
+        int depth = 5;
         reader = new Scanner(System.in);
         Player whitePlayer;
         Player blackPlayer;
@@ -82,6 +83,9 @@ public class Main {
                 break;
         }
         System.out.println(turns + " turns used");
+        long endTime = new java.util.Date().getTime();
+        long timeDiff = (endTime - startTime);
+        System.out.println(timeDiff/1000.0 + " seconds");
     }
     
     private static Boolean isValidInput(String input){
