@@ -15,7 +15,6 @@ public class Main {
      * Gives each player a turn until a termination state is reached
      */
     public static void main(String [] args){
-        long startTime = new java.util.Date().getTime();
         Boolean printTree = false;
         int turns = 0;
         int depth = 5;
@@ -48,6 +47,7 @@ public class Main {
         BoardState currentState = new BoardState(whitePlayer, blackPlayer);
         
         //run the game loop
+        long startTime = new java.util.Date().getTime();
         Boolean gameComplete = false;
         while(!gameComplete){
             turns++;
